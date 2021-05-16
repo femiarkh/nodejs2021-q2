@@ -1,40 +1,39 @@
 const router = require('express').Router({ mergeParams: true });
 const Task = require('./task.model');
 const tasksService = require('./task.service');
+const routerHandlers = require('../../utils/routerHandlers');
 
 router
   .route('/')
   .get(async (req, res) => {
-    const tasks = await tasksService.getAll(req.params.boardId);
-    // map user fields to exclude secret fields like "password"
-    res.json(tasks.map(Task.toResponse));
+    routerHandlers.handleGetAll(
+      req,
+      res,
+      tasksService,
+      Task,
+      req.params.boardId
+    );
   })
   .post(async (req, res) => {
-    const task = await tasksService.save(req.params.boardId, req.body);
-    res.status(201).send(Task.toResponse(task));
+    routerHandlers.handlePost(req, res, tasksService, Task, req.params.boardId);
   });
 
 router
   .route('/:taskId')
   .get(async (req, res) => {
-    const result = await tasksService.get(req.params.taskId);
-    if (result === '404') {
-      res.status(404).send(null);
-    } else {
-      res.status(200).send(Task.toResponse(result));
-    }
+    routerHandlers.handleGetById(
+      req,
+      res,
+      tasksService,
+      Task,
+      req.params.taskId
+    );
   })
   .put(async (req, res) => {
-    const task = await tasksService.update(req.params.taskId, req.body);
-    res.status(200).send(Task.toResponse(task));
+    routerHandlers.handlePut(req, res, tasksService, Task, req.params.taskId);
   })
   .delete(async (req, res) => {
-    const result = await tasksService.remove(req.params.taskId);
-    if (result === '404') {
-      res.status(404).send(null);
-    } else {
-      res.status(204).send(null);
-    }
+    routerHandlers.handleDelete(req, res, tasksService, req.params.taskId);
   });
 
 module.exports = router;
