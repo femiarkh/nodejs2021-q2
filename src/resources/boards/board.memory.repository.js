@@ -1,6 +1,6 @@
 const DB = require('../../utils/inMemoryDB');
 
-const TABLE_NAME = 'USERS';
+const TABLE_NAME = 'BOARDS';
 
 const getAll = async () => DB.getAll(TABLE_NAME);
 
@@ -10,6 +10,6 @@ const save = async (user) => DB.add(TABLE_NAME, user);
 
 const update = async (id, user) => DB.update(TABLE_NAME, id, user);
 
-const remove = async (id) => DB.deleteUser(TABLE_NAME, id);
+const remove = async (id) => DB.deleteBoard(TABLE_NAME, id);
 
 module.exports = { getAll, save, get, update, remove };
