@@ -32,6 +32,9 @@ module.exports = {
 
   update(table, id, user) {
     const index = this[table].findIndex((it) => it.id === id);
+    if (index === -1) {
+      return '404';
+    }
     this[table][index] = user;
     return user;
   },

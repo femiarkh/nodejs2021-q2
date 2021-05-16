@@ -29,7 +29,11 @@ const handleGetById = async (req, res, service, model, param) => {
 
 const handlePut = async (req, res, service, model, param) => {
   const result = await service.update(param, req.body);
-  res.status(200).send(model.toResponse(result));
+  if (result === '404') {
+    res.status(404).send(null);
+  } else {
+    res.status(200).send(model.toResponse(result));
+  }
 };
 
 const handleDelete = async (req, res, service, param) => {
