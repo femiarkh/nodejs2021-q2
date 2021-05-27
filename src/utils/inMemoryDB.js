@@ -29,7 +29,7 @@ module.exports = {
   /**
    * Returns a specified array from the DB.
    * @param {string} table - An array to be returned.
-   * @returns A specifed array.
+   * @returns {Object[]} A specifed array.
    */
   getAll(table) {
     return this[table];
