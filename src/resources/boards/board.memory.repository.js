@@ -29,7 +29,7 @@ const save = async (board) => DB.add(TABLE_NAME, board);
  * Update a board in the DB.
  * @param {string} id - An id of an updated board.
  * @param {Object} board - New board data.
- * @returns {Object | string} Updated board or '404' in case the board with that id is not found.
+ * @returns {Object | string} The updated board or '404' in case the board with that id is not found.
  */
 const update = async (id, board) => DB.update(TABLE_NAME, id, board);
 

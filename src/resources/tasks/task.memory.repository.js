@@ -19,7 +19,7 @@ const getAll = async (boardId) => DB.getAllTasks(boardId);
 const get = async (id) => DB.get(TABLE_NAME, id);
 
 /**
- * Add a task to a specified board in the DB.
+ * Add a task with a specified board in the DB.
  * @async
  * @param {string} boardId - An id of a board.
  * @param {Object} task - A task object.
@@ -30,8 +30,8 @@ const save = async (boardId, task) => DB.addTask(boardId, task);
 /**
  * Update a task in the DB.
  * @param {string} id - An id of an updated task.
- * @param {Object} user - New task data.
- * @returns {Object | string} Updated task or '404' in case the task with that id is not found.
+ * @param {Object} task - New task data.
+ * @returns {Object | string} The updated task or '404' in case the task with that id is not found.
  */
 const update = async (id, task) => DB.update(TABLE_NAME, id, task);
 
@@ -39,7 +39,7 @@ const update = async (id, task) => DB.update(TABLE_NAME, id, task);
  * Removes a task from the DB.
  * @async
  * @param {string} id - An id of a task to be deleted.
- * @returns {null | string} Null or or '404' in case the task with that id is not found.
+ * @returns {null | string} Null or '404' in case the task with that id is not found.
  */
 const remove = async (id) => DB.delete(TABLE_NAME, id);
 

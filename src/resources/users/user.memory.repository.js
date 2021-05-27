@@ -29,7 +29,7 @@ const save = async (user) => DB.add(TABLE_NAME, user);
  * Update a user in the DB.
  * @param {string} id - An id of an updated user.
  * @param {Object} user - New user data.
- * @returns {Object | string} Updated user or '404' in case the user with that id is not found.
+ * @returns {Object | string} The updated user or '404' in case the user with that id is not found.
  */
 const update = async (id, user) => DB.update(TABLE_NAME, id, user);
 
