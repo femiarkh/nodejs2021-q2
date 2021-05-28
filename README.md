@@ -70,3 +70,11 @@ npm run lint
 Press <kbd>F5</kbd> to debug.
 
 For more information, visit: https://code.visualstudio.com/docs/editor/debugging
+
+### Documentation
+
+The project uses JSDoc 3 for creating documentation. To generate docs, run
+
+`npm run doc`
+
+The doc pages will be generated in `jsdoc` folder in the root directory.
