@@ -17,13 +17,30 @@ router
 router
   .route('/:id')
   .get(async (req: Request, res: Response) => {
-    routerHandlers.handleGetById(req, res, usersService, User, req.params.id);
+    routerHandlers.handleGetById(
+      req,
+      res,
+      usersService,
+      User,
+      req.params['id'] as string
+    );
   })
   .put(async (req: Request, res: Response) => {
-    routerHandlers.handlePut(req, res, usersService, User, req.params.id);
+    routerHandlers.handlePut(
+      req,
+      res,
+      usersService,
+      User,
+      req.params['id'] as string
+    );
   })
   .delete(async (req: Request, res: Response) => {
-    routerHandlers.handleDelete(req, res, usersService, req.params.id);
+    routerHandlers.handleDelete(
+      req,
+      res,
+      usersService,
+      req.params['id'] as string
+    );
   });
 
 export default router;

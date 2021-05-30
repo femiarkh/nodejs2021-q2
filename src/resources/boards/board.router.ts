@@ -22,7 +22,7 @@ router
       res,
       boardsService,
       Board,
-      req.params.boardId
+      req.params['boardId'] as string
     );
   })
   .put(async (req: Request, res: Response) => {
@@ -31,11 +31,16 @@ router
       res,
       boardsService,
       Board,
-      req.params.boardId
+      req.params['boardId'] as string
     );
   })
   .delete(async (req: Request, res: Response) => {
-    routerHandlers.handleDelete(req, res, boardsService, req.params.boardId);
+    routerHandlers.handleDelete(
+      req,
+      res,
+      boardsService,
+      req.params['boardId'] as string
+    );
   });
 
 export default router;

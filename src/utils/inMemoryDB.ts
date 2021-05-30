@@ -5,9 +5,11 @@ import Task from '../resources/tasks/task.model';
 type Table = 'USERS' | 'BOARDS' | 'TASKS';
 type Entity = User | Board | Task;
 
-class inMemoryDB {
+class InMemoryDB {
   private USERS: User[] = [];
+
   private BOARDS: Board[] = [];
+
   private TASKS: Task[] = [];
 
   /**
@@ -62,7 +64,7 @@ class inMemoryDB {
     if (index === -1) {
       return '404';
     }
-    return this[table][index];
+    return this[table][index] as Entity;
   }
 
   /**
@@ -128,4 +130,4 @@ class inMemoryDB {
   }
 }
 
-export default new inMemoryDB();
+export default new InMemoryDB();

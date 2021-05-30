@@ -22,7 +22,7 @@ interface Model {
  * @param {string} [id] - An id specifying a place to look in.
  */
 export async function handleGetAll(
-  req: Request,
+  _req: Request,
   res: Response,
   service: Service,
   model: Model,
@@ -74,7 +74,7 @@ export async function handlePost(
  * @param {string} id - An id of the entity.
  */
 export const handleGetById = async (
-  req: Request,
+  _req: Request,
   res: Response,
   service: Service,
   model: Model,
@@ -119,7 +119,7 @@ export const handlePut = async (
  * @param {string} id - An id of the entity deleted.
  */
 export const handleDelete = async (
-  req: Request,
+  _req: Request,
   res: Response,
   service: Service,
   id: string
