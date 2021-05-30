@@ -1,7 +1,15 @@
-const uuid = require('uuid');
+import { v4 } from 'uuid';
 
 /** Class representing a board. */
 class Task {
+  id: string;
+  title: string;
+  order: number;
+  description: string;
+  userId: string | null;
+  boardId: string;
+  columnId: string;
+
   /**
    * Create a task.
    * @param {Object} taskdObj - An object with task's data.
@@ -14,7 +22,7 @@ class Task {
    * @param {string} boardObj.columnId - Column id.
    */
   constructor({
-    id = uuid.v4(),
+    id = v4(),
     title = 'TASK',
     order = 0,
     description = 'DESCRIPTION',
@@ -36,9 +44,10 @@ class Task {
    * @param {Object} task - A Task instance.
    * @returns A Task instance.
    */
-  static toResponse(task) {
-    return task;
+  static toResponse(task: Task) {
+    const { id, title, order, description, userId, boardId, columnId } = task;
+    return { id, title, order, description, userId, boardId, columnId };
   }
 }
 
-module.exports = Task;
+export default Task;

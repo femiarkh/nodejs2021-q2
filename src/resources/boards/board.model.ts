@@ -1,7 +1,14 @@
-const uuid = require('uuid');
+import { v4 } from 'uuid';
 
 /** Class representing a board. */
 class Board {
+  id: string;
+  title: string;
+  columns: {
+    title: string;
+    order: number;
+  }[];
+
   /**
    * Create a board.
    * @param {Object} boardObj - An object with board's data.
@@ -9,7 +16,11 @@ class Board {
    * @param {string} boardObj.title - Board title.
    * @param {Object[]} boardObj.columns - An array of board columns.
    */
-  constructor({ id = uuid.v4(), title = 'BOARD', columns = [] } = {}) {
+  constructor({
+    id = v4(),
+    title = 'BOARD',
+    columns = [{ title: '', order: -1 }],
+  } = {}) {
     this.id = id;
     this.title = title;
     this.columns = columns;
@@ -20,9 +31,10 @@ class Board {
    * @param {Object} board - A Board instance.
    * @returns {Object} A Board instance.
    */
-  static toResponse(board) {
-    return board;
+  static toResponse(board: Board) {
+    const { id, title, columns } = board;
+    return { id, title, columns };
   }
 }
 
-module.exports = Board;
+export default Board;

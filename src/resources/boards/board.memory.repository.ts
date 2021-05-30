@@ -1,4 +1,5 @@
-const DB = require('../../utils/inMemoryDB');
+import DB from '../../utils/inMemoryDB';
+import Board from './board.model';
 
 const TABLE_NAME = 'BOARDS';
 
@@ -7,7 +8,7 @@ const TABLE_NAME = 'BOARDS';
  * @async
  * @returns {Object[]} An array of boards.
  */
-const getAll = async () => DB.getAll(TABLE_NAME);
+export const getAll = async () => DB.getAll(TABLE_NAME);
 
 /**
  * Get a board from the DB.
@@ -15,7 +16,7 @@ const getAll = async () => DB.getAll(TABLE_NAME);
  * @param {string} id - An id of a board.
  * @returns {Object | string} The found board or '404' in case nothing is found.
  */
-const get = async (id) => DB.get(TABLE_NAME, id);
+export const get = async (id: string) => DB.get(TABLE_NAME, id);
 
 /**
  * Add a board to the DB.
@@ -23,7 +24,7 @@ const get = async (id) => DB.get(TABLE_NAME, id);
  * @param {Object} board - A board object.
  * @returns {Object} The added board.
  */
-const save = async (board) => DB.add(TABLE_NAME, board);
+export const save = async (board: Board) => DB.add(TABLE_NAME, board);
 
 /**
  * Update a board in the DB.
@@ -31,7 +32,8 @@ const save = async (board) => DB.add(TABLE_NAME, board);
  * @param {Object} board - New board data.
  * @returns {Object | string} The updated board or '404' in case the board with that id is not found.
  */
-const update = async (id, board) => DB.update(TABLE_NAME, id, board);
+export const update = async (id: string, board: Board) =>
+  DB.update(TABLE_NAME, id, board);
 
 /**
  * Removes a board from the DB.
@@ -39,6 +41,4 @@ const update = async (id, board) => DB.update(TABLE_NAME, id, board);
  * @param {string} id - An id of a board to be deleted.
  * @returns {null | string} Null or or '404' in case the board with that id is not found.
  */
-const remove = async (id) => DB.deleteBoard(id);
-
-module.exports = { getAll, save, get, update, remove };
+export const remove = async (id: string) => DB.deleteBoard(id);
