@@ -3,7 +3,9 @@ import { v4 } from 'uuid';
 /** Class representing a board. */
 class Board {
   id: string;
+
   title: string;
+
   columns: {
     title: string;
     order: number;
