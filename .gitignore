@@ -1,4 +1,5 @@
 node_modules
 jsdoc
 dist
-logs.txt
+logs.main.txt
+logs.errors.txt
