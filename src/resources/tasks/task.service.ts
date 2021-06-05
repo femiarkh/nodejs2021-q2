@@ -11,5 +11,5 @@ export default {
   save: async (boardId: string, task: InitialTask) =>
     tasksRepo.save(boardId, new Task(task)),
 
-  update: async (id: string, task: Task) => tasksRepo.update(id, task),
+  update: async (id: string, task: InitialTask) => tasksRepo.update(id, task),
 };

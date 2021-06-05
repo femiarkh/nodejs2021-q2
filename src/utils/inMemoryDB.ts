@@ -1,9 +1,10 @@
-import User from '../resources/users/user.model';
-import Board from '../resources/boards/board.model';
-import Task from '../resources/tasks/task.model';
+import User, { InitialUser } from '../resources/users/user.model';
+import Board, { InitialBoard } from '../resources/boards/board.model';
+import Task, { InitialTask } from '../resources/tasks/task.model';
 
 type Table = 'USERS' | 'BOARDS' | 'TASKS';
 type Entity = User | Board | Task;
+type InitialEntity = InitialUser | InitialBoard | InitialTask;
 
 class InMemoryDB {
   private USERS: User[] = [];
@@ -39,12 +40,12 @@ class InMemoryDB {
     return this[table][index] as Entity;
   }
 
-  update(table: Table, id: string, entity: User | Board | Task) {
+  update(table: Table, id: string, entity: InitialEntity) {
     const index = this[table].findIndex((it: Entity) => it.id === id);
     if (index === -1) {
       return '404';
     }
-    this[table][index] = entity;
+    this[table][index] = { id, ...entity };
     return entity;
   }
 

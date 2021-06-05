@@ -10,5 +10,6 @@ export default {
 
   save: async (board: InitialBoard) => boardsRepo.save(new Board(board)),
 
-  update: async (id: string, board: Board) => boardsRepo.update(id, board),
+  update: async (id: string, board: InitialBoard) =>
+    boardsRepo.update(id, board),
 };

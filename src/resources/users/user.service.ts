@@ -10,5 +10,5 @@ export default {
 
   save: async (user: InitialUser) => usersRepo.save(new User(user)),
 
-  update: async (id: string, user: User) => usersRepo.update(id, user),
+  update: async (id: string, user: InitialUser) => usersRepo.update(id, user),
 };

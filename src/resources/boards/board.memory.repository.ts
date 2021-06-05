@@ -1,5 +1,5 @@
 import DB from '../../utils/inMemoryDB';
-import Board from './board.model';
+import Board, { InitialBoard } from './board.model';
 
 const TABLE_NAME = 'BOARDS';
 
@@ -9,7 +9,7 @@ export const get = async (id: string) => DB.get(TABLE_NAME, id);
 
 export const save = async (board: Board) => DB.add(TABLE_NAME, board);
 
-export const update = async (id: string, board: Board) =>
+export const update = async (id: string, board: InitialBoard) =>
   DB.update(TABLE_NAME, id, board);
 
 export const remove = async (id: string) => DB.deleteBoard(id);
