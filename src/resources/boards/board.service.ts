@@ -12,13 +12,13 @@ interface BoardData {
 }
 
 export default {
-  getAll: () => boardsRepo.getAll(),
+  getAll: async () => boardsRepo.getAll(),
 
-  get: (id: string) => boardsRepo.get(id),
+  get: async (id: string) => boardsRepo.get(id),
 
-  remove: (id: string) => boardsRepo.remove(id),
+  remove: async (id: string) => boardsRepo.remove(id),
 
-  save: (board: BoardData) => boardsRepo.save(new Board(board)),
+  save: async (board: BoardData) => boardsRepo.save(new Board(board)),
 
-  update: (id: string, board: Board) => boardsRepo.update(id, board),
+  update: async (id: string, board: Board) => boardsRepo.update(id, board),
 };

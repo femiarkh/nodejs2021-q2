@@ -8,13 +8,13 @@ interface UserData {
 }
 
 export default {
-  getAll: () => usersRepo.getAll(),
+  getAll: async () => usersRepo.getAll(),
 
-  get: (id: string) => usersRepo.get(id),
+  get: async (id: string) => usersRepo.get(id),
 
-  remove: (id: string) => usersRepo.remove(id),
+  remove: async (id: string) => usersRepo.remove(id),
 
-  save: (user: UserData) => usersRepo.save(new User(user)),
+  save: async (user: UserData) => usersRepo.save(new User(user)),
 
-  update: (id: string, user: User) => usersRepo.update(id, user),
+  update: async (id: string, user: User) => usersRepo.update(id, user),
 };

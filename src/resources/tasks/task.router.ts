@@ -1,58 +1,52 @@
 import express, { Request, Response } from 'express';
 import Task from './task.model';
 import tasksService from './task.service';
-import * as routerHandlers from '../../utils/routerHandlers';
 
 const router = express.Router({ mergeParams: true });
 
 router
   .route('/')
   .get(async (req: Request, res: Response) => {
-    routerHandlers.handleGetAll(
-      req,
-      res,
-      tasksService,
-      Task,
-      req.params['boardId'] as string
-    );
+    const boardId = req.params['boardId'] as string;
+    const tasks = await tasksService.getAll(boardId);
+    res.json(tasks.map(Task.toResponse));
   })
   .post(async (req: Request, res: Response) => {
-    routerHandlers.handlePost(
-      req,
-      res,
-      tasksService,
-      Task,
-      req.params['boardId'] as string
-    );
+    const boardId = req.params['boardId'] as string;
+    const newTask = await tasksService.save(boardId, req.body);
+    res.status(201).send(Task.toResponse(newTask));
   });
 
 router
   .route('/:taskId')
   .get(async (req: Request, res: Response) => {
-    routerHandlers.handleGetById(
-      req,
-      res,
-      tasksService,
-      Task,
-      req.params['taskId'] as string
-    );
+    const taskId = req.params['taskId'] as string;
+    const result = (await tasksService.get(taskId)) as Task | '404';
+    if (result === '404') {
+      res.status(404).send(null);
+    } else {
+      res.status(200).send(Task.toResponse(result));
+    }
   })
   .put(async (req: Request, res: Response) => {
-    routerHandlers.handlePut(
-      req,
-      res,
-      tasksService,
-      Task,
-      req.params['taskId'] as string
-    );
+    const taskId = req.params['taskId'] as string;
+    const result = (await tasksService.update(taskId, req.body)) as
+      | Task
+      | '404';
+    if (result === '404') {
+      res.status(404).send(null);
+    } else {
+      res.status(200).send(Task.toResponse(result));
+    }
   })
   .delete(async (req: Request, res: Response) => {
-    routerHandlers.handleDelete(
-      req,
-      res,
-      tasksService,
-      req.params['taskId'] as string
-    );
+    const taskId = req.params['taskId'] as string;
+    const result = await tasksService.remove(taskId);
+    if (result === '404') {
+      res.status(404).send(null);
+    } else {
+      res.status(204).send(null);
+    }
   });
 
 export default router;
