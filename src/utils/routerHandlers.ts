@@ -13,14 +13,6 @@ interface Model {
   toResponse(entity: Entity): Partial<Entity>;
 }
 
-/**
- * Helper function that handles getting all the entities through a specified service.
- * @param {Object} req - A request.
- * @param {Object} res - A response.
- * @param {Object} service - A service that is used.
- * @param {Object} model - A model class.
- * @param {string} [id] - An id specifying a place to look in.
- */
 export async function handleGetAll(
   _req: Request,
   res: Response,
@@ -38,14 +30,6 @@ export async function handleGetAll(
   res.json(results.map(model.toResponse));
 }
 
-/**
- * Helper function that handles sending new data to the db through a specified service.
- * @param {Object} req - A request.
- * @param {Object} res - A response.
- * @param {Object} service - A service that is used.
- * @param {Object} model - A model class.
- * @param {string} [id] - An id specifying a place to save data at.
- */
 export async function handlePost(
   req: Request,
   res: Response,
@@ -65,14 +49,6 @@ export async function handlePost(
   res.status(201).send(model.toResponse(result));
 }
 
-/**
- * Helper function that handles getting an entity by id through a specified service.
- * @param {Object} req - A request.
- * @param {Object} res - A response.
- * @param {Object} service - A service that is used.
- * @param {Object} model - A model class.
- * @param {string} id - An id of the entity.
- */
 export const handleGetById = async (
   _req: Request,
   res: Response,
@@ -88,14 +64,6 @@ export const handleGetById = async (
   }
 };
 
-/**
- * Helper function that handles updating an entity through a specified service.
- * @param {Object} req - A request.
- * @param {Object} res - A response.
- * @param {Object} service - A service that is used.
- * @param {Object} model - A model class.
- * @param {string} id - An id of the entity updated.
- */
 export const handlePut = async (
   req: Request,
   res: Response,
@@ -111,13 +79,6 @@ export const handlePut = async (
   }
 };
 
-/**
- * Helper function that handles deleting an entity through a specified service.
- * @param {Object} req - A request.
- * @param {Object} res - A response.
- * @param {Object} service - A service that is used.
- * @param {string} id - An id of the entity deleted.
- */
 export const handleDelete = async (
   _req: Request,
   res: Response,
