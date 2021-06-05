@@ -9,12 +9,12 @@ router
   .get(async (req: Request, res: Response) => {
     const boardId = req.params['boardId'] as string;
     const tasks = await tasksService.getAll(boardId);
-    res.json(tasks.map(Task.toResponse));
+    res.json(tasks);
   })
   .post(async (req: Request, res: Response) => {
     const boardId = req.params['boardId'] as string;
     const newTask = await tasksService.save(boardId, req.body);
-    res.status(201).send(Task.toResponse(newTask));
+    res.status(201).send(newTask);
   });
 
 router
@@ -25,7 +25,7 @@ router
     if (result === '404') {
       res.status(404).send(null);
     } else {
-      res.status(200).send(Task.toResponse(result));
+      res.status(200).send(result);
     }
   })
   .put(async (req: Request, res: Response) => {
@@ -36,7 +36,7 @@ router
     if (result === '404') {
       res.status(404).send(null);
     } else {
-      res.status(200).send(Task.toResponse(result));
+      res.status(200).send(result);
     }
   })
   .delete(async (req: Request, res: Response) => {

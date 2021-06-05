@@ -1,14 +1,5 @@
-import Task from './task.model';
+import Task, { InitialTask } from './task.model';
 import * as tasksRepo from './task.memory.repository';
-
-interface TaskData {
-  title?: string | undefined;
-  order?: number | undefined;
-  description?: string | undefined;
-  userId?: string | undefined;
-  boardId?: string | undefined;
-  columnId?: string | undefined;
-}
 
 export default {
   getAll: async (boardId: string) => tasksRepo.getAll(boardId),
@@ -17,7 +8,7 @@ export default {
 
   remove: async (id: string) => tasksRepo.remove(id),
 
-  save: async (boardId: string, task: TaskData) =>
+  save: async (boardId: string, task: InitialTask) =>
     tasksRepo.save(boardId, new Task(task)),
 
   update: async (id: string, task: Task) => tasksRepo.update(id, task),

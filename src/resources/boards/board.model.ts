@@ -1,5 +1,14 @@
 import { v4 } from 'uuid';
 
+export type InitialBoard = {
+  title: string;
+
+  columns: {
+    title: string;
+    order: number;
+  }[];
+};
+
 class Board {
   id: string;
 
@@ -10,19 +19,11 @@ class Board {
     order: number;
   }[];
 
-  constructor({
-    id = v4(),
-    title = 'BOARD',
-    columns = [{ title: '', order: -1 }],
-  } = {}) {
-    this.id = id;
+  constructor(boardData: InitialBoard) {
+    const { title, columns } = boardData;
+    this.id = v4();
     this.title = title;
     this.columns = columns;
-  }
-
-  static toResponse(board: Board) {
-    const { id, title, columns } = board;
-    return { id, title, columns };
   }
 }
 

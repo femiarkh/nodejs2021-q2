@@ -1,15 +1,5 @@
-import Board from './board.model';
+import Board, { InitialBoard } from './board.model';
 import * as boardsRepo from './board.memory.repository';
-
-interface BoardData {
-  title?: string | undefined;
-  columns?:
-    | {
-        title: string;
-        order: number;
-      }[]
-    | undefined;
-}
 
 export default {
   getAll: async () => boardsRepo.getAll(),
@@ -18,7 +8,7 @@ export default {
 
   remove: async (id: string) => boardsRepo.remove(id),
 
-  save: async (board: BoardData) => boardsRepo.save(new Board(board)),
+  save: async (board: InitialBoard) => boardsRepo.save(new Board(board)),
 
   update: async (id: string, board: Board) => boardsRepo.update(id, board),
 };

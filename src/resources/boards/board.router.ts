@@ -8,11 +8,11 @@ router
   .route('/')
   .get(async (_req: Request, res: Response) => {
     const boards = (await boardsService.getAll()) as Board[];
-    res.status(200).json(boards.map(Board.toResponse));
+    res.status(200).json(boards);
   })
   .post(async (req: Request, res: Response) => {
     const newBoard = await boardsService.save(req.body);
-    res.status(201).send(Board.toResponse(newBoard));
+    res.status(201).send(newBoard);
   });
 
 router
@@ -23,7 +23,7 @@ router
     if (result === '404') {
       res.status(404).send(null);
     } else {
-      res.status(200).send(Board.toResponse(result));
+      res.status(200).send(result);
     }
   })
   .put(async (req: Request, res: Response) => {
@@ -34,7 +34,7 @@ router
     if (result === '404') {
       res.status(404).send(null);
     } else {
-      res.status(200).send(Board.toResponse(result));
+      res.status(200).send(result);
     }
   })
   .delete(async (req: Request, res: Response) => {
