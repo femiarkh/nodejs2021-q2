@@ -1,68 +1,49 @@
 import { Request, Response } from 'express';
 import Task, { InitialTask } from './task.model';
 import * as tasksRepo from './task.memory.repository';
+import catchAsync from '../../utils/catchAsync';
 
 export default {
-  getAll: async (req: Request, res: Response) => {
-    try {
-      const boardId = req.params['boardId'] as string;
-      const tasks = await tasksRepo.getAll(boardId);
-      res.json(tasks);
-    } catch (err) {
-      console.log(err);
-    }
-  },
+  getAll: catchAsync(async (req: Request, res: Response) => {
+    const boardId = req.params['boardId'] as string;
+    const tasks = await tasksRepo.getAll(boardId);
+    res.json(tasks);
+  }),
 
-  get: async (req: Request, res: Response) => {
-    try {
-      const taskId = req.params['taskId'] as string;
-      const result = (await tasksRepo.get(taskId)) as Task | '404';
-      if (result === '404') {
-        res.status(404).send(null);
-      } else {
-        res.status(200).send(result);
-      }
-    } catch (err) {
-      console.log(err);
+  get: catchAsync(async (req: Request, res: Response) => {
+    const taskId = req.params['taskId'] as string;
+    const result = (await tasksRepo.get(taskId)) as Task | '404';
+    if (result === '404') {
+      res.status(404).send(null);
+    } else {
+      res.status(200).send(result);
     }
-  },
+  }),
 
-  save: async (req: Request, res: Response) => {
-    try {
-      const newTaskData: InitialTask = req.body;
-      const boardId = req.params['boardId'] as string;
-      const newTask = await tasksRepo.save(boardId, new Task(newTaskData));
-      res.status(201).send(newTask);
-    } catch (err) {
-      console.log(err);
-    }
-  },
+  save: catchAsync(async (req: Request, res: Response) => {
+    const newTaskData: InitialTask = req.body;
+    const boardId = req.params['boardId'] as string;
+    const newTask = await tasksRepo.save(boardId, new Task(newTaskData));
+    res.status(201).send(newTask);
+  }),
 
-  update: async (req: Request, res: Response) => {
-    try {
-      const taskId = req.params['taskId'] as string;
-      const result = (await tasksRepo.update(taskId, req.body)) as Task | '404';
-      if (result === '404') {
-        res.status(404).send(null);
-      } else {
-        res.status(200).send(result);
-      }
-    } catch (err) {
-      console.log(err);
+  update: catchAsync(async (req: Request, res: Response) => {
+    const taskId = req.params['taskId'] as string;
+    const result = (await tasksRepo.update(taskId, req.body)) as Task | '404';
+    if (result === '404') {
+      res.status(404).send(null);
+    } else {
+      res.status(200).send(result);
     }
-  },
+  }),
 
-  remove: async (req: Request, res: Response) => {
-    try {
-      const taskId = req.params['taskId'] as string;
-      const result = await tasksRepo.remove(taskId);
-      if (result === '404') {
-        res.status(404).send(null);
-      } else {
-        res.status(204).send(null);
-      }
-    } catch (err) {
-      console.log(err);
+  remove: catchAsync(async (req: Request, res: Response) => {
+    const taskId = req.params['taskId'] as string;
+    const result = await tasksRepo.remove(taskId);
+    if (result === '404') {
+      res.status(404).send(null);
+    } else {
+      res.status(204).send(null);
     }
-  },
+  }),
 };
