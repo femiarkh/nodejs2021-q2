@@ -64,7 +64,10 @@ request body: ${bodyString}\n`;
       }
     });
     // log errors in edition to main logging file
-    if (!res.statusCode.toString().startsWith('2')) {
+    if (
+      res.statusCode.toString().startsWith('4') ||
+      res.statusCode.toString().startsWith('5')
+    ) {
       fs.appendFile('logs.errors.txt', `${log}\n`, (err) => {
         if (err) {
           console.log(err);
