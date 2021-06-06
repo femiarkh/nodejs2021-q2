@@ -2,7 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import User, { InitialUser } from '../resources/users/user.model';
 import Board, { InitialBoard } from '../resources/boards/board.model';
 import Task, { InitialTask } from '../resources/tasks/task.model';
-import AppError from './AppError';
+import AppError from './errors/AppError';
 
 type Table = 'USERS' | 'BOARDS' | 'TASKS';
 type Entity = User | Board | Task;

@@ -6,16 +6,16 @@ import { StatusCodes } from 'http-status-codes';
 import userRouter from './resources/users/user.router';
 import boardRouter from './resources/boards/board.router';
 import taskRouter from './resources/tasks/task.router';
-import loggingMiddleware from './middlewares/loggingMiddleware';
-import AppError from './utils/AppError';
-import errorController from './utils/error.controller';
+import * as logging from './utils/logging';
+import AppError from './utils/errors/AppError';
+import errorController from './utils/errors/error.controller';
 
 const app = express();
 
 const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
 
 app.use(express.json());
-app.use(loggingMiddleware);
+app.use(logging.middleware);
 
 app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 

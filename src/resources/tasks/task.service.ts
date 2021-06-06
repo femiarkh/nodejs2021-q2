@@ -2,7 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import { Request, Response } from 'express';
 import Task from './task.model';
 import * as tasksRepo from './task.memory.repository';
-import catchAsync from '../../utils/catchAsync';
+import catchAsync from '../../utils/errors/catchAsync';
 
 export default {
   getAll: catchAsync(async (req: Request, res: Response) => {

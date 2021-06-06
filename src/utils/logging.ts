@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { finished } from 'stream';
 import fs from 'fs';
 
-const loggingMiddleware = (req: Request, res: Response, next: NextFunction) => {
+export const middleware = (req: Request, res: Response, next: NextFunction) => {
   const { method, query, body, url } = req;
   const start = Date.now();
   next();
@@ -30,4 +30,12 @@ request body: ${JSON.stringify(body)}\n`;
   });
 };
 
-export default loggingMiddleware;
+export const unhandledRejection = (err: Error) => {
+  const log = `Unhandled promise rejection happened :(
+[${new Date().toLocaleString()}]
+${err.name}: ${err.message}\n`;
+  console.log(log);
+  fs.appendFileSync('logs.main.txt', `${log}\n`);
+  fs.appendFileSync('logs.errors.txt', `${log}\n`);
+  return null;
+};

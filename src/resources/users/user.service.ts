@@ -2,8 +2,8 @@ import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import User, { InitialUser } from './user.model';
 import * as usersRepo from './user.memory.repository';
-import catchAsync from '../../utils/catchAsync';
-import AppError from '../../utils/AppError';
+import catchAsync from '../../utils/errors/catchAsync';
+import AppError from '../../utils/errors/AppError';
 
 export default {
   getAll: catchAsync(async (_req: Request, res: Response) => {

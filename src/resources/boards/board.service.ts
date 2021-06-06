@@ -2,8 +2,8 @@ import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import Board, { InitialBoard } from './board.model';
 import * as boardsRepo from './board.memory.repository';
-import catchAsync from '../../utils/catchAsync';
-import AppError from '../../utils/AppError';
+import catchAsync from '../../utils/errors/catchAsync';
+import AppError from '../../utils/errors/AppError';
 
 export default {
   getAll: catchAsync(async (_req: Request, res: Response) => {
