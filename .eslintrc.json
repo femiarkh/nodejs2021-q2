@@ -42,6 +42,7 @@
     "import/prefer-default-export": "off",
     "dot-notation": "off",
     "no-unused-vars": "warn",
-    "no-param-reassign": ["error", { "props": false }]
+    "no-param-reassign": ["error", { "props": false }],
+    "consistent-return": "off"
   }
 }

@@ -1,7 +1,9 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
+import { StatusCodes } from 'http-status-codes';
 import Board, { InitialBoard } from './board.model';
 import * as boardsRepo from './board.memory.repository';
 import catchAsync from '../../utils/catchAsync';
+import AppError from '../../utils/AppError';
 
 export default {
   getAll: catchAsync(async (_req: Request, res: Response) => {
@@ -19,8 +21,28 @@ export default {
     }
   }),
 
-  save: catchAsync(async (req: Request, res: Response) => {
-    const newBoardData: InitialBoard = req.body;
+  save: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const { title, columns }: InitialBoard = req.body;
+    if (!title || !columns) {
+      return next(
+        new AppError(
+          'Request body should include the following: title, columns.',
+          StatusCodes.BAD_REQUEST
+        )
+      );
+    }
+    if (
+      !Array.isArray(columns) ||
+      columns.some((it) => it.title === undefined || !it.order === undefined)
+    ) {
+      return next(
+        new AppError(
+          'Columns provided in the request body must be an array of objects with title and order fields.',
+          StatusCodes.BAD_REQUEST
+        )
+      );
+    }
+    const newBoardData: InitialBoard = { title, columns };
     const newBoard = await boardsRepo.save(new Board(newBoardData));
     res.status(201).send(newBoard);
   }),

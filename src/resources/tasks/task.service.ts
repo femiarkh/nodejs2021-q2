@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+
 import Task, { InitialTask } from './task.model';
 import * as tasksRepo from './task.memory.repository';
 import catchAsync from '../../utils/catchAsync';
@@ -21,9 +22,26 @@ export default {
   }),
 
   save: catchAsync(async (req: Request, res: Response) => {
-    const newTaskData: InitialTask = req.body;
-    const boardId = req.params['boardId'] as string;
-    const newTask = await tasksRepo.save(boardId, new Task(newTaskData));
+    const {
+      title,
+      order,
+      description,
+      boardId,
+      userId,
+      columnId,
+    }: InitialTask = req.body;
+
+    const paramsBoardId = req.params['boardId'] as string;
+
+    const newTaskData = {
+      title,
+      order,
+      description,
+      boardId,
+      userId,
+      columnId,
+    };
+    const newTask = await tasksRepo.save(paramsBoardId, new Task(newTaskData));
     res.status(201).send(newTask);
   }),
 
