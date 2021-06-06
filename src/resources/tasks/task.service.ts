@@ -1,6 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 import { Request, Response } from 'express';
-import Task, { InitialTask } from './task.model';
+import Task from './task.model';
 import * as tasksRepo from './task.memory.repository';
 import catchAsync from '../../utils/catchAsync';
 
@@ -18,26 +18,9 @@ export default {
   }),
 
   save: catchAsync(async (req: Request, res: Response) => {
-    const {
-      title,
-      order,
-      description,
-      boardId,
-      userId,
-      columnId,
-    }: InitialTask = req.body;
-
     const paramsBoardId = req.params['boardId'] as string;
 
-    const newTaskData = {
-      title,
-      order,
-      description,
-      boardId,
-      userId,
-      columnId,
-    };
-    const newTask = await tasksRepo.save(paramsBoardId, new Task(newTaskData));
+    const newTask = await tasksRepo.save(paramsBoardId, new Task(req.body));
     res.status(StatusCodes.CREATED).json(newTask);
   }),
 
