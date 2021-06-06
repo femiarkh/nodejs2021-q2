@@ -1,18 +1,23 @@
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
+import AppError from './AppError';
 
 const errorController = (
-  err: any,
+  err: AppError | Error,
   _req: Request,
   res: Response,
   _next: NextFunction
 ) => {
-  err.statusCode = err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR;
-  err.status = err.status || 'error';
+  const statusCode =
+    err instanceof AppError
+      ? err.statusCode
+      : StatusCodes.INTERNAL_SERVER_ERROR;
+  const status = err instanceof AppError ? err.status : 'error';
+  const { message } = err;
 
-  res.status(err.statusCode).json({
-    status: err.status,
-    message: err.message,
+  res.status(statusCode).json({
+    status,
+    message,
   });
 };
 
