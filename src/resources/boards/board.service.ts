@@ -8,17 +8,13 @@ import AppError from '../../utils/AppError';
 export default {
   getAll: catchAsync(async (_req: Request, res: Response) => {
     const boards = (await boardsRepo.getAll()) as Board[];
-    res.status(200).json(boards);
+    res.status(StatusCodes.OK).json(boards);
   }),
 
   get: catchAsync(async (req: Request, res: Response) => {
     const boardId = req.params['boardId'] as string;
-    const result = (await boardsRepo.get(boardId)) as Board | '404';
-    if (result === '404') {
-      res.status(404).send(null);
-    } else {
-      res.status(200).send(result);
-    }
+    const result = (await boardsRepo.get(boardId)) as Board;
+    res.status(StatusCodes.OK).json(result);
   }),
 
   save: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
@@ -44,28 +40,18 @@ export default {
     }
     const newBoardData: InitialBoard = { title, columns };
     const newBoard = await boardsRepo.save(new Board(newBoardData));
-    res.status(201).send(newBoard);
+    res.status(StatusCodes.CREATED).json(newBoard);
   }),
 
   update: catchAsync(async (req: Request, res: Response) => {
     const boardId = req.params['boardId'] as string;
-    const result = (await boardsRepo.update(boardId, req.body)) as
-      | Board
-      | '404';
-    if (result === '404') {
-      res.status(404).send(null);
-    } else {
-      res.status(200).send(result);
-    }
+    const updatedBoard = (await boardsRepo.update(boardId, req.body)) as Board;
+    res.status(StatusCodes.OK).json(updatedBoard);
   }),
 
   remove: catchAsync(async (req: Request, res: Response) => {
     const boardId = req.params['boardId'] as string;
-    const result = (await boardsRepo.remove(boardId)) as Board | '404';
-    if (result === '404') {
-      res.status(404).send(null);
-    } else {
-      res.status(204).send(null);
-    }
+    await boardsRepo.remove(boardId);
+    res.status(StatusCodes.NO_CONTENT).send(null);
   }),
 };

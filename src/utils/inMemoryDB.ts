@@ -1,6 +1,8 @@
+import { StatusCodes } from 'http-status-codes';
 import User, { InitialUser } from '../resources/users/user.model';
 import Board, { InitialBoard } from '../resources/boards/board.model';
 import Task, { InitialTask } from '../resources/tasks/task.model';
+import AppError from './AppError';
 
 type Table = 'USERS' | 'BOARDS' | 'TASKS';
 type Entity = User | Board | Task;
@@ -35,7 +37,7 @@ class InMemoryDB {
   get(table: Table, id: string) {
     const index = this[table].findIndex((el: Entity) => el.id === id);
     if (index === -1) {
-      return '404';
+      throw new AppError('entity is not found', StatusCodes.NOT_FOUND);
     }
     return this[table][index] as Entity;
   }
@@ -43,7 +45,7 @@ class InMemoryDB {
   update(table: Table, id: string, entity: InitialEntity) {
     const index = this[table].findIndex((it: Entity) => it.id === id);
     if (index === -1) {
-      return '404';
+      throw new AppError('entity is not found', StatusCodes.NOT_FOUND);
     }
     this[table][index] = { id, ...entity };
     return entity;
@@ -52,7 +54,7 @@ class InMemoryDB {
   delete(table: Table, id: string) {
     const index = this[table].findIndex((it: Entity) => it.id === id);
     if (index === -1) {
-      return '404';
+      throw new AppError('entity is not found', StatusCodes.NOT_FOUND);
     }
     this[table].splice(index, 1);
     return null;

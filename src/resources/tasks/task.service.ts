@@ -1,5 +1,5 @@
+import { StatusCodes } from 'http-status-codes';
 import { Request, Response } from 'express';
-
 import Task, { InitialTask } from './task.model';
 import * as tasksRepo from './task.memory.repository';
 import catchAsync from '../../utils/catchAsync';
@@ -13,12 +13,8 @@ export default {
 
   get: catchAsync(async (req: Request, res: Response) => {
     const taskId = req.params['taskId'] as string;
-    const result = (await tasksRepo.get(taskId)) as Task | '404';
-    if (result === '404') {
-      res.status(404).send(null);
-    } else {
-      res.status(200).send(result);
-    }
+    const result = (await tasksRepo.get(taskId)) as Task;
+    res.status(StatusCodes.OK).json(result);
   }),
 
   save: catchAsync(async (req: Request, res: Response) => {
@@ -42,26 +38,18 @@ export default {
       columnId,
     };
     const newTask = await tasksRepo.save(paramsBoardId, new Task(newTaskData));
-    res.status(201).send(newTask);
+    res.status(StatusCodes.CREATED).json(newTask);
   }),
 
   update: catchAsync(async (req: Request, res: Response) => {
     const taskId = req.params['taskId'] as string;
-    const result = (await tasksRepo.update(taskId, req.body)) as Task | '404';
-    if (result === '404') {
-      res.status(404).send(null);
-    } else {
-      res.status(200).send(result);
-    }
+    const result = (await tasksRepo.update(taskId, req.body)) as Task;
+    res.status(StatusCodes.OK).json(result);
   }),
 
   remove: catchAsync(async (req: Request, res: Response) => {
     const taskId = req.params['taskId'] as string;
-    const result = await tasksRepo.remove(taskId);
-    if (result === '404') {
-      res.status(404).send(null);
-    } else {
-      res.status(204).send(null);
-    }
+    await tasksRepo.remove(taskId);
+    res.status(StatusCodes.NO_CONTENT).send(null);
   }),
 };

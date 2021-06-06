@@ -8,17 +8,13 @@ import AppError from '../../utils/AppError';
 export default {
   getAll: catchAsync(async (_req: Request, res: Response) => {
     const users = (await usersRepo.getAll()) as User[];
-    res.json(users.map(User.toResponse));
+    res.status(StatusCodes.OK).json(users.map(User.toResponse));
   }),
 
   get: catchAsync(async (req: Request, res: Response) => {
     const id = req.params['id'] as string;
-    const result = (await usersRepo.get(id)) as User | '404';
-    if (result === '404') {
-      res.status(404).send(null);
-    } else {
-      res.status(200).send(User.toResponse(result));
-    }
+    const result = (await usersRepo.get(id)) as User;
+    res.status(StatusCodes.OK).json(User.toResponse(result));
   }),
 
   save: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
@@ -33,26 +29,18 @@ export default {
     }
     const newUserData: InitialUser = { name, login, password };
     const newUser = await usersRepo.save(new User(newUserData));
-    res.status(201).send(User.toResponse(newUser));
+    res.status(StatusCodes.CREATED).json(User.toResponse(newUser));
   }),
 
   update: catchAsync(async (req: Request, res: Response) => {
     const id = req.params['id'] as string;
-    const result = (await usersRepo.update(id, req.body)) as User | '404';
-    if (result === '404') {
-      res.status(404).send(null);
-    } else {
-      res.status(200).send(User.toResponse(result));
-    }
+    const updatedUser = (await usersRepo.update(id, req.body)) as User;
+    res.status(StatusCodes.OK).json(User.toResponse(updatedUser));
   }),
 
   remove: catchAsync(async (req: Request, res: Response) => {
     const id = req.params['id'] as string;
-    const result = await usersRepo.remove(id);
-    if (result === '404') {
-      res.status(404).send(null);
-    } else {
-      res.status(204).send(null);
-    }
+    await usersRepo.remove(id);
+    res.status(StatusCodes.NO_CONTENT).send(null);
   }),
 };
