@@ -7,6 +7,8 @@ import userRouter from './resources/users/user.router';
 import boardRouter from './resources/boards/board.router';
 import taskRouter from './resources/tasks/task.router';
 import loggingMiddleware from './middlewares/loggingMiddleware';
+import AppError from './utils/AppError';
+import errorController from './utils/error.controller';
 
 const app = express();
 
@@ -29,11 +31,12 @@ app.use('/users', userRouter);
 app.use('/boards', boardRouter);
 boardRouter.use('/:boardId/tasks', taskRouter);
 
-app.all('*', (req, res) =>
-  res.status(StatusCodes.NOT_FOUND).json({
-    status: 'fail',
-    message: `Sorry, can't find ${req.originalUrl}`,
-  })
-);
+app.all('*', (req, _res, next) => {
+  next(
+    new AppError(`Sorry, can't find ${req.originalUrl}`, StatusCodes.NOT_FOUND)
+  );
+});
+
+app.use(errorController);
 
 module.exports = app;
