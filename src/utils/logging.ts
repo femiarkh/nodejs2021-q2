@@ -33,7 +33,17 @@ request body: ${JSON.stringify(body)}\n`;
 export const unhandledRejection = (err: Error) => {
   const log = `Unhandled promise rejection happened :(
 [${new Date().toLocaleString()}]
-${err.name}: ${err.message}\n`;
+${err.stack}\n`;
+  console.log(log);
+  fs.appendFileSync('logs.main.txt', `${log}\n`);
+  fs.appendFileSync('logs.errors.txt', `${log}\n`);
+  return null;
+};
+
+export const uncaughtException = (err: Error) => {
+  const log = `Uncaught exception happened :(
+[${new Date().toLocaleString()}]
+${err.stack}\n`;
   console.log(log);
   fs.appendFileSync('logs.main.txt', `${log}\n`);
   fs.appendFileSync('logs.errors.txt', `${log}\n`);
