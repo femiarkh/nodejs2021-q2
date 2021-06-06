@@ -5,7 +5,7 @@ process.on('uncaughtException', (err: Error) => {
   process.exit(1);
 });
 
-// Uncomment to test handling uncaught exceptions
+// Uncomment following lines to test handling uncaught exceptions
 // (function testUncaughtExceptions() {
 //   throw new Error('BAM!');
 // })();
@@ -24,7 +24,7 @@ process.on('unhandledRejection', (err: Error) => {
   });
 });
 
-// Uncomment to test handling unhandled rejections
+// Uncomment following lines to test handling unhandled rejections
 // (async function testUnhandledRejections() {
 //   throw new Error('BAM!');
 // })();
