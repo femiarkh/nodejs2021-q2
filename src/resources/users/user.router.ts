@@ -1,46 +1,14 @@
-import express, { Request, Response } from 'express';
-import User from './user.model';
+import express from 'express';
 import usersService from './user.service';
-import * as routerHandlers from '../../utils/routerHandlers';
 
 const router = express.Router();
 
-router
-  .route('/')
-  .get(async (req: Request, res: Response) => {
-    routerHandlers.handleGetAll(req, res, usersService, User);
-  })
-  .post(async (req: Request, res: Response) => {
-    routerHandlers.handlePost(req, res, usersService, User);
-  });
+router.route('/').get(usersService.getAll).post(usersService.save);
 
 router
   .route('/:id')
-  .get(async (req: Request, res: Response) => {
-    routerHandlers.handleGetById(
-      req,
-      res,
-      usersService,
-      User,
-      req.params['id'] as string
-    );
-  })
-  .put(async (req: Request, res: Response) => {
-    routerHandlers.handlePut(
-      req,
-      res,
-      usersService,
-      User,
-      req.params['id'] as string
-    );
-  })
-  .delete(async (req: Request, res: Response) => {
-    routerHandlers.handleDelete(
-      req,
-      res,
-      usersService,
-      req.params['id'] as string
-    );
-  });
+  .get(usersService.get)
+  .put(usersService.update)
+  .delete(usersService.remove);
 
 export default router;

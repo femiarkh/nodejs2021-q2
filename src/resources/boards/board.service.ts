@@ -1,49 +1,57 @@
-import Board from './board.model';
+import { NextFunction, Request, Response } from 'express';
+import { StatusCodes } from 'http-status-codes';
+import Board, { InitialBoard } from './board.model';
 import * as boardsRepo from './board.memory.repository';
-
-interface BoardData {
-  title?: string | undefined;
-  columns?:
-    | {
-        title: string;
-        order: number;
-      }[]
-    | undefined;
-}
+import catchAsync from '../../utils/errors/catchAsync';
+import AppError from '../../utils/errors/AppError';
 
 export default {
-  /**
-   * Get all boards.
-   * @returns {Object[]} An array of board objects.
-   */
-  getAll: () => boardsRepo.getAll(),
+  getAll: catchAsync(async (_req: Request, res: Response) => {
+    const boards = (await boardsRepo.getAll()) as Board[];
+    res.status(StatusCodes.OK).json(boards);
+  }),
 
-  /**
-   * Get one board.
-   * @param {string} id - An id of a board.
-   * @returns {Object | string} The found board or '404' in case nothing is found.
-   */
-  get: (id: string) => boardsRepo.get(id),
+  get: catchAsync(async (req: Request, res: Response) => {
+    const boardId = req.params['boardId'] as string;
+    const result = (await boardsRepo.get(boardId)) as Board;
+    res.status(StatusCodes.OK).json(result);
+  }),
 
-  /**
-   * Delete a board.
-   * @param {string} id - An id of a board.
-   * @returns {null | string} Null or or '404' in case the board with that id is not found.
-   */
-  remove: (id: string) => boardsRepo.remove(id),
+  save: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const { title, columns }: InitialBoard = req.body;
+    if (!title || !columns) {
+      return next(
+        new AppError(
+          'Request body should include the following: title, columns.',
+          StatusCodes.BAD_REQUEST
+        )
+      );
+    }
+    if (
+      !Array.isArray(columns) ||
+      columns.some((it) => it.title === undefined || !it.order === undefined)
+    ) {
+      return next(
+        new AppError(
+          'Columns provided in the request body must be an array of objects with title and order fields.',
+          StatusCodes.BAD_REQUEST
+        )
+      );
+    }
+    const newBoardData: InitialBoard = { title, columns };
+    const newBoard = await boardsRepo.save(new Board(newBoardData));
+    res.status(StatusCodes.CREATED).json(newBoard);
+  }),
 
-  /**
-   * Add a board.
-   * @param {Object} board - A board object.
-   * @returns {Object} The added board.
-   */
-  save: (board: BoardData) => boardsRepo.save(new Board(board)),
+  update: catchAsync(async (req: Request, res: Response) => {
+    const boardId = req.params['boardId'] as string;
+    const updatedBoard = (await boardsRepo.update(boardId, req.body)) as Board;
+    res.status(StatusCodes.OK).json(updatedBoard);
+  }),
 
-  /**
-   * Update a board.
-   * @param {string} id - An id of a board.
-   * @param {Object} board - New board data.
-   * @returns {Object | string} The updated board or '404' in case the board with that id is not found.
-   */
-  update: (id: string, board: Board) => boardsRepo.update(id, board),
+  remove: catchAsync(async (req: Request, res: Response) => {
+    const boardId = req.params['boardId'] as string;
+    await boardsRepo.remove(boardId);
+    res.status(StatusCodes.NO_CONTENT).send(null);
+  }),
 };

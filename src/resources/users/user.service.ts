@@ -1,45 +1,46 @@
-import User from './user.model';
+import { Request, Response, NextFunction } from 'express';
+import { StatusCodes } from 'http-status-codes';
+import User, { InitialUser } from './user.model';
 import * as usersRepo from './user.memory.repository';
-
-interface UserData {
-  name?: string | undefined;
-  login?: string | undefined;
-  password?: string | undefined;
-}
+import catchAsync from '../../utils/errors/catchAsync';
+import AppError from '../../utils/errors/AppError';
 
 export default {
-  /**
-   * Get all users.
-   * @returns {Object[]} An array of user objects.
-   */
-  getAll: () => usersRepo.getAll(),
+  getAll: catchAsync(async (_req: Request, res: Response) => {
+    const users = (await usersRepo.getAll()) as User[];
+    res.status(StatusCodes.OK).json(users.map(User.toResponse));
+  }),
 
-  /**
-   * Get one user.
-   * @param {string} id - An id of a user.
-   * @returns {Object | string} The found user or '404' in case nothing is found.
-   */
-  get: (id: string) => usersRepo.get(id),
+  get: catchAsync(async (req: Request, res: Response) => {
+    const id = req.params['id'] as string;
+    const result = (await usersRepo.get(id)) as User;
+    res.status(StatusCodes.OK).json(User.toResponse(result));
+  }),
 
-  /**
-   * Delete a user.
-   * @param {string} id - An id of a user.
-   * @returns {null | string} Null or or '404' in case the user with that id is not found.
-   */
-  remove: (id: string) => usersRepo.remove(id),
+  save: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const { name, login, password } = req.body;
+    if (!name || !login || !password) {
+      return next(
+        new AppError(
+          'Request body should include the following: name, login, password.',
+          StatusCodes.BAD_REQUEST
+        )
+      );
+    }
+    const newUserData: InitialUser = { name, login, password };
+    const newUser = await usersRepo.save(new User(newUserData));
+    res.status(StatusCodes.CREATED).json(User.toResponse(newUser));
+  }),
 
-  /**
-   * Add a user.
-   * @param {Object} user - A user object.
-   * @returns {Object} The added user.
-   */
-  save: (user: UserData) => usersRepo.save(new User(user)),
+  update: catchAsync(async (req: Request, res: Response) => {
+    const id = req.params['id'] as string;
+    const updatedUser = (await usersRepo.update(id, req.body)) as User;
+    res.status(StatusCodes.OK).json(User.toResponse(updatedUser));
+  }),
 
-  /**
-   * Update a user.
-   * @param {string} id - An id of a user.
-   * @param {Object} user - New user data.
-   * @returns {Object | string} The updated user or '404' in case the user with that id is not found.
-   */
-  update: (id: string, user: User) => usersRepo.update(id, user),
+  remove: catchAsync(async (req: Request, res: Response) => {
+    const id = req.params['id'] as string;
+    await usersRepo.remove(id);
+    res.status(StatusCodes.NO_CONTENT).send(null);
+  }),
 };
