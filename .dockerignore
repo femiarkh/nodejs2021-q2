@@ -1,0 +1,7 @@
+.github
+.vscode
+doc
+node_modules
+logs.main.txt
+logs.errors.txt
+.env
