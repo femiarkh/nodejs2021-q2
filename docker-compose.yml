@@ -14,6 +14,7 @@ services:
     restart: always
     environment:
       - PORT=${PORT}
+    image: femiarkh/rss-node
   postgres:
     build: ./database/
     ports:
@@ -25,5 +26,6 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
+    image: femiarkh/rss-postgres
 networks:
   custom-network: {}
