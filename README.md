@@ -4,6 +4,7 @@
 
 - Git - [Download & Install Git](https://git-scm.com/downloads).
 - Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
+- Docker - [Download & Install Docker](https://www.docker.com/get-started)
 
 ## Downloading
 
@@ -11,16 +12,14 @@
 git clone {repository URL}
 ```
 
-## Installing NPM modules
+## Running application with Docker
+
+Make sure Docker is installed.
+Go to the root directory and run
 
 ```
-npm install
-```
-
-## Running application
-
-```
-npm start
+docker-compose pull
+docker-compose up
 ```
 
 After starting the app on port (4000 as default) you can open
