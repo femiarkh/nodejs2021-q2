@@ -6,16 +6,20 @@ services:
       - ${PORT}:${PORT}
     depends_on:
       - postgres
+    volumes:
+      - ./src:/usr/app/src
     networks:
       - custom-network
+    restart: always
     environment:
-      - PORT=4000
+      - PORT=${PORT}
   postgres:
     build: ./database/
     ports:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}
     networks:
-      - nodejs-2021q2
+      - custom-network
+    restart: always
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
