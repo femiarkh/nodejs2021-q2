@@ -3,6 +3,10 @@ import { finished } from 'stream';
 import fs from 'fs';
 import chalk from 'chalk';
 
+if (!fs.existsSync('logs')) {
+  fs.mkdirSync('logs');
+}
+
 const colorLog = ({
   date,
   statusCode,
@@ -58,7 +62,7 @@ request body: ${bodyString}\n`;
 
     console.log(coloredLog);
 
-    fs.appendFile('logs.main.txt', `${log}\n`, (err) => {
+    fs.appendFile('logs/logs.main.txt', `${log}\n`, (err) => {
       if (err) {
         console.log(err);
       }
@@ -68,7 +72,7 @@ request body: ${bodyString}\n`;
       res.statusCode.toString().startsWith('4') ||
       res.statusCode.toString().startsWith('5')
     ) {
-      fs.appendFile('logs.errors.txt', `${log}\n`, (err) => {
+      fs.appendFile('logs/logs.errors.txt', `${log}\n`, (err) => {
         if (err) {
           console.log(err);
         }
@@ -89,8 +93,8 @@ ${err.stack}\n`;
 
   console.log(coloredLog);
 
-  fs.appendFileSync('logs.main.txt', `${log}\n`);
-  fs.appendFileSync('logs.errors.txt', `${log}\n`);
+  fs.appendFileSync('logs/logs.main.txt', `${log}\n`);
+  fs.appendFileSync('logs/logs.errors.txt', `${log}\n`);
   return null;
 };
 
@@ -104,7 +108,7 @@ ${err.stack}\n`;
 
   console.log(coloredLog);
 
-  fs.appendFileSync('logs.main.txt', `${log}\n`);
-  fs.appendFileSync('logs.errors.txt', `${log}\n`);
+  fs.appendFileSync('logs/logs.main.txt', `${log}\n`);
+  fs.appendFileSync('logs/logs.errors.txt', `${log}\n`);
   return null;
 };
