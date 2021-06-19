@@ -3,7 +3,7 @@ services:
   node:
     build: .
     ports:
-      - ${PORT}:${PORT}
+      - 127.0.0.1:${PORT}:${PORT}
     depends_on:
       - postgres
     volumes:
@@ -18,7 +18,7 @@ services:
   postgres:
     build: ./database/
     ports:
-      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+      - 127.0.0.1:${POSTGRES_PORT}:${POSTGRES_PORT}
     networks:
       - custom-network
     restart: always

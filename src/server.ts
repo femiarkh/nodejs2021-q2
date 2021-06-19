@@ -1,4 +1,5 @@
 import * as logging from './utils/logging';
+import 'reflect-metadata';
 
 process.on('uncaughtException', (err: Error) => {
   logging.uncaughtException(err);
