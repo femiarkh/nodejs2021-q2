@@ -1,5 +1,8 @@
-import * as logging from './utils/logging';
+import { createConnection } from 'typeorm';
 import 'reflect-metadata';
+import { Server } from 'http';
+import * as logging from './utils/logging';
+import app from './app';
 
 process.on('uncaughtException', (err: Error) => {
   logging.uncaughtException(err);
@@ -11,18 +14,25 @@ process.on('uncaughtException', (err: Error) => {
 //   throw new Error('BAM!');
 // })();
 
-const { PORT } = require('./common/config');
-const app = require('./app');
+const port = process.env['PORT'] || 4000;
 
-const server = app.listen(PORT, () =>
-  console.log(`App is running on http://localhost:${PORT}`)
-);
+let server: Server;
+
+(async () => {
+  await createConnection();
+
+  server = app.listen(port, () =>
+    console.log(`App is running on http://localhost:${port}`)
+  );
+})();
 
 process.on('unhandledRejection', (err: Error) => {
   logging.unhandledRejection(err);
-  server.close(() => {
-    process.exit(1);
-  });
+  if (server) {
+    server.close(() => {
+      process.exit(1);
+    });
+  }
 });
 
 // Uncomment following lines to test handling unhandled rejections

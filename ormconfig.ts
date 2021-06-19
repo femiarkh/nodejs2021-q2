@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   type: 'postgres',
   host: process.env['POSTGRES_HOST'],
   username: process.env['POSTGRES_USER'],
