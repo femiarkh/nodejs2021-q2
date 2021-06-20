@@ -14,7 +14,11 @@ export default {
       boards.map((board) => ({
         id: board.id.toString(),
         title: board.title,
-        columns: board.columns,
+        columns: board.columns?.map(({ id, title, order }) => ({
+          id: id.toString(),
+          title,
+          order,
+        })),
       }))
     );
   }),
@@ -30,7 +34,11 @@ export default {
     res.status(StatusCodes.OK).json({
       id: board.id.toString(),
       title: board.title,
-      columns: board.columns,
+      columns: board.columns?.map(({ id, title, order }) => ({
+        id: id.toString(),
+        title,
+        order,
+      })),
     });
   }),
 
@@ -77,7 +85,11 @@ export default {
     res.status(StatusCodes.CREATED).json({
       id: addedBoard.id.toString(),
       title: addedBoard.title,
-      columns: addedBoard.columns,
+      columns: addedBoard.columns?.map(({ id, title: columnTitle, order }) => ({
+        id: id.toString(),
+        title: columnTitle,
+        order,
+      })),
     });
   }),
 
