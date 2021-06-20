@@ -18,7 +18,6 @@ Make sure Docker is installed.
 Go to the root directory and run
 
 ```
-docker-compose pull
 docker-compose up
 ```
 
