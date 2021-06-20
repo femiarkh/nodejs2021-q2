@@ -1,14 +1,12 @@
-/* eslint-disable import/no-cycle */
 import {
   Column as TypeormColumn,
   Entity,
   JoinColumn,
   ManyToOne,
-  // OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+// eslint-disable-next-line import/no-cycle
 import Board from '../boards/board.entity';
-// import Task from '../tasks/task.entity';
 
 @Entity('columns')
 class Column {
@@ -27,9 +25,6 @@ class Column {
   @ManyToOne(() => Board, (board) => board.columns)
   @JoinColumn({ name: 'board_id' })
   board?: Board;
-
-  // @OneToMany(() => Task, (task) => task.column)
-  // tasks?: Task[];
 }
 
 export default Column;
