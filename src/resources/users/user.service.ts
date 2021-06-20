@@ -4,6 +4,7 @@ import { getRepository } from 'typeorm';
 import User from './user.entity';
 import catchAsync from '../../utils/errors/catchAsync';
 import AppError from '../../utils/errors/AppError';
+import Task from '../tasks/task.entity';
 
 export default {
   getAll: catchAsync(async (_req: Request, res: Response) => {
@@ -79,6 +80,12 @@ export default {
   remove: catchAsync(async (req: Request, res: Response) => {
     const id = req.params['id'] as string;
     await getRepository(User).delete(id);
+    await getRepository(Task)
+      .createQueryBuilder()
+      .update()
+      .set({ userId: null })
+      .where('user_id = :id', { id })
+      .execute();
     res.status(StatusCodes.NO_CONTENT).send(null);
   }),
 };

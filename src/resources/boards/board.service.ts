@@ -1,10 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
-import { getConnection, getRepository } from 'typeorm';
+import { getRepository } from 'typeorm';
 import { StatusCodes } from 'http-status-codes';
 import catchAsync from '../../utils/errors/catchAsync';
 import AppError from '../../utils/errors/AppError';
 import Board from './board.entity';
 import Column from '../columns/column.entity';
+import Task from '../tasks/task.entity';
 
 export default {
   getAll: catchAsync(async (_req: Request, res: Response) => {
@@ -125,10 +126,16 @@ export default {
 
   remove: catchAsync(async (req: Request, res: Response) => {
     const boardId = req.params['boardId'] as string;
-    await getConnection()
+    await getRepository(Column)
       .createQueryBuilder()
       .delete()
       .from(Column)
+      .where('board_id = :id', { id: boardId })
+      .execute();
+    await getRepository(Task)
+      .createQueryBuilder()
+      .delete()
+      .from(Task)
       .where('board_id = :id', { id: boardId })
       .execute();
     res.status(StatusCodes.NO_CONTENT).send(null);
