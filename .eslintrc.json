@@ -44,6 +44,7 @@
     "no-unused-vars": "warn",
     "no-param-reassign": ["error", { "props": false }],
     "consistent-return": "off",
-    "class-methods-use-this": "off"
+    "class-methods-use-this": "off",
+    "camelcase": "off"
   }
 }
