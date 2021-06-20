@@ -19,7 +19,8 @@ const port = process.env['PORT'] || 4000;
 let server: Server;
 
 (async () => {
-  await createConnection();
+  const connection = await createConnection();
+  await connection.runMigrations();
 
   server = app.listen(port, () =>
     console.log(`App is running on http://localhost:${port}`)
