@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { getRepository } from 'typeorm';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import AppError from '../../utils/errors/AppError';
 import catchAsync from '../../utils/errors/catchAsync';
 import User from '../users/user.entity';
@@ -25,12 +26,15 @@ export default {
         );
       }
       if (isMatch) {
-        res.json({
-          status: 'success',
-          message: 'User is successfully logged in',
-        });
+        const token = jwt.sign(
+          { userId: user.id, login: user.login },
+          process.env['SECRET'] as string
+        );
+        res.status(StatusCodes.OK).json({ token });
       } else {
-        res.json({ status: 'fail', message: 'Provided password is incorrect' });
+        res
+          .status(StatusCodes.BAD_REQUEST)
+          .json({ status: 'fail', message: 'Provided password is incorrect' });
       }
     });
   }),
