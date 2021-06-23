@@ -10,6 +10,7 @@ import taskRouter from './resources/tasks/task.router';
 import * as logging from './utils/logging';
 import AppError from './utils/errors/AppError';
 import errorController from './utils/errors/error.controller';
+import authenticate from './utils/authenticate';
 
 const app = express();
 
@@ -29,9 +30,9 @@ app.use('/', (req, res, next) => {
 });
 
 app.use('/login', loginRouter);
-app.use('/users', userRouter);
-app.use('/boards', boardRouter);
-boardRouter.use('/:boardId/tasks', taskRouter);
+app.use('/users', authenticate, userRouter);
+app.use('/boards', authenticate, boardRouter);
+boardRouter.use('/:boardId/tasks', authenticate, taskRouter);
 
 app.all('*', (req, _res, next) => {
   next(
