@@ -15,7 +15,7 @@ export default {
     if (!user) {
       throw new AppError(
         'User with provided login is not found',
-        StatusCodes.NOT_FOUND
+        StatusCodes.FORBIDDEN
       );
     }
     bcrypt.compare(password, user?.password, (err, isMatch) => {
