@@ -3,6 +3,7 @@ import 'reflect-metadata';
 import { Server } from 'http';
 import * as logging from './utils/logging';
 import app from './app';
+import createAdmin from './utils/createAdmin';
 
 process.on('uncaughtException', (err: Error) => {
   logging.uncaughtException(err);
@@ -21,10 +22,11 @@ let server: Server;
 (async () => {
   const connection = await createConnection();
   await connection.runMigrations();
+  await createAdmin();
 
-  server = app.listen(port, () =>
-    console.log(`App is running on http://localhost:${port}`)
-  );
+  server = app.listen(port, () => {
+    console.log(`App is running on http://localhost:${port}`);
+  });
 })();
 
 process.on('unhandledRejection', (err: Error) => {
