@@ -58,7 +58,6 @@ export default {
         id: user.id.toString(),
         name: user.name,
         login: user.login,
-        password: user.password,
       });
     });
   }),
