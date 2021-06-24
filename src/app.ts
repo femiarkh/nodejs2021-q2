@@ -3,7 +3,7 @@ import swaggerUI from 'swagger-ui-express';
 import path from 'path';
 import YAML from 'yamljs';
 import { StatusCodes } from 'http-status-codes';
-import loginRouter from './resources/login/login.router';
+import loginRouter from './login/login.router';
 import userRouter from './resources/users/user.router';
 import boardRouter from './resources/boards/board.router';
 import taskRouter from './resources/tasks/task.router';

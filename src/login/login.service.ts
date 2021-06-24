@@ -3,9 +3,9 @@ import { StatusCodes } from 'http-status-codes';
 import { getRepository } from 'typeorm';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import AppError from '../../utils/errors/AppError';
-import catchAsync from '../../utils/errors/catchAsync';
-import User from '../users/user.entity';
+import AppError from '../utils/errors/AppError';
+import catchAsync from '../utils/errors/catchAsync';
+import User from '../resources/users/user.entity';
 
 export default {
   login: catchAsync(async (req: Request, res: Response) => {
