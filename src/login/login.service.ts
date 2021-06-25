@@ -33,7 +33,7 @@ export default {
         res.status(StatusCodes.OK).json({ token });
       } else {
         res
-          .status(StatusCodes.BAD_REQUEST)
+          .status(StatusCodes.UNAUTHORIZED)
           .json({ status: 'fail', message: 'Provided password is incorrect' });
       }
     });
