@@ -43,6 +43,8 @@
     "dot-notation": "off",
     "no-unused-vars": "warn",
     "no-param-reassign": ["error", { "props": false }],
-    "consistent-return": "off"
+    "consistent-return": "off",
+    "class-methods-use-this": "off",
+    "camelcase": "off"
   }
 }

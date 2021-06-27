@@ -39,4 +39,4 @@ app.all('*', (req, _res, next) => {
 
 app.use(errorController);
 
-module.exports = app;
+export default app;
