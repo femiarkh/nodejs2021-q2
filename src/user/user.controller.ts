@@ -2,6 +2,7 @@ import { Body, Controller, Get, Post } from '@nestjs/common';
 import { User } from './models/user.entity';
 import { UserService } from './user.service';
 import * as bcrypt from 'bcrypt';
+import { UserCreateDto } from './models/user-create.dto';
 
 @Controller('users')
 export class UserController {
@@ -13,7 +14,7 @@ export class UserController {
   }
 
   @Post()
-  async create(@Body() body) {
+  async create(@Body() body: UserCreateDto) {
     const { name, login, password } = body;
     const hashed = await bcrypt.hash(password, 10);
     return this.userService.create({
