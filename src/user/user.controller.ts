@@ -17,10 +17,15 @@ export class UserController {
   async create(@Body() body: UserCreateDto) {
     const { name, login, password } = body;
     const hashed = await bcrypt.hash(password, 10);
-    return this.userService.create({
+    const response = await this.userService.create({
       name,
       login,
       password: hashed,
     });
+    return {
+      name: response.name,
+      login: response.login,
+      id: response.id,
+    };
   }
 }
