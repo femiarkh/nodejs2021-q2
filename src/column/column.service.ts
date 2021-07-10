@@ -10,6 +10,12 @@ export class ColumnService {
     private readonly columnRepository: Repository<Column>,
   ) {}
 
+  async find(boardId): Promise<Column[]> {
+    return this.columnRepository.find({
+      where: { boardId },
+    });
+  }
+
   async create(data): Promise<Column | Column[]> {
     return this.columnRepository.save(data);
   }

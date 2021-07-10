@@ -16,14 +16,18 @@ import * as bcrypt from 'bcrypt';
 import { UserCreateDto } from './models/user-create.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { UserUpdateDto } from './models/user-update.dto';
+import { TaskService } from 'src/task/task.service';
 
+@UseGuards(JwtAuthGuard)
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('users')
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private taskService: TaskService,
+  ) {}
 
   @Get()
-  @UseGuards(JwtAuthGuard)
   async all(): Promise<User[]> {
     return this.userService.all();
   }
@@ -57,6 +61,15 @@ export class UserController {
 
   @Delete(':id')
   async delete(@Param('id') id: number) {
+    const tasks = await this.taskService.findByCondition({ userId: id });
+    await Promise.all(
+      tasks.map((task) =>
+        this.taskService.update(task.boardId, task.id, {
+          ...task,
+          userId: null,
+        }),
+      ),
+    );
     return this.userService.delete(id);
   }
 }

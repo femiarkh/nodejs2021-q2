@@ -14,6 +14,7 @@ import { BoardCreateDto } from './models/board-create.dto';
 import { BoardUpdateDto } from './models/board-update.dto';
 import { Board } from './models/board.entity';
 import { ColumnService } from './../column/column.service';
+import { TaskService } from 'src/task/task.service';
 
 @UseGuards(JwtAuthGuard)
 @Controller('boards')
@@ -21,6 +22,7 @@ export class BoardController {
   constructor(
     private boardService: BoardService,
     private columnService: ColumnService,
+    private taskService: TaskService,
   ) {}
 
   @Get()
@@ -41,18 +43,29 @@ export class BoardController {
   }
 
   @Get(':id')
-  async get(@Param('id') id: number) {
+  async get(@Param('id') id: string) {
     return this.boardService.findOne(id);
   }
 
   @Put(':id')
-  async update(@Param('id') id: number, @Body() body: BoardUpdateDto) {
+  async update(@Param('id') id: string, @Body() body: BoardUpdateDto) {
     await this.boardService.update(id, body);
+    await this.columnService.create(
+      body.columns.map((column) => {
+        column.boardId = id;
+        return column;
+      }),
+    );
+
     return this.boardService.findOne(id);
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: number) {
+  async delete(@Param('id') id: string) {
+    const tasks = await this.taskService.all(id);
+    await Promise.all(
+      tasks.map((task) => this.taskService.delete(id, task.id)),
+    );
     return this.boardService.delete(id);
   }
 }

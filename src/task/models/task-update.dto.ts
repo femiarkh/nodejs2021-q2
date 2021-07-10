@@ -10,9 +10,7 @@ export class TaskUpdateDto {
   @IsString()
   description: string;
 
-  @IsString()
   userId: string;
 
-  @IsString()
   columnId: string;
 }

@@ -11,8 +11,8 @@ import {
 
 @Entity('columns')
 export class Column {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @TypeormColumn()
   @IsNotEmpty()
@@ -24,7 +24,7 @@ export class Column {
   @IsNumber()
   order: number;
 
-  @ManyToOne(() => Board, (board) => board.columns)
+  @ManyToOne(() => Board, (board) => board.columns, { onDelete: 'SET NULL' })
   @JoinColumn({ name: 'boardId', referencedColumnName: 'id' })
-  boardId: number;
+  boardId: string;
 }

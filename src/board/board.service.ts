@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Task } from 'src/task/models/task.entity';
 import { Repository } from 'typeorm';
 import { Board } from './models/board.entity';
 
@@ -19,14 +20,20 @@ export class BoardService {
   }
 
   async findOne(condition): Promise<Board> {
-    return this.boardRepository.findOne(condition, { relations: ['columns'] });
+    const board = await this.boardRepository.findOne(condition, {
+      relations: ['columns'],
+    });
+    if (!board) {
+      throw new NotFoundException('Board is not found');
+    }
+    return board;
   }
 
-  async update(id: number, data): Promise<any> {
-    return this.boardRepository.update(id, data);
+  async update(id: string, data): Promise<any> {
+    return this.boardRepository.update(id, { title: data.title });
   }
 
-  async delete(id: number): Promise<any> {
+  async delete(id: string): Promise<any> {
     return this.boardRepository.delete(id);
   }
 }

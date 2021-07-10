@@ -11,8 +11,8 @@ import {
 
 @Entity('tasks')
 export class Task {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @TypeormColumn()
   title: string;
@@ -23,21 +23,12 @@ export class Task {
   @TypeormColumn()
   description: string;
 
-  @ManyToOne(() => User)
-  user: User;
+  @TypeormColumn({ nullable: true })
+  userId: string | null;
 
-  @TypeormColumn()
-  userId: string;
+  @TypeormColumn({ nullable: true })
+  boardId: string | null;
 
-  @ManyToOne(() => Board)
-  board: Board;
-
-  @TypeormColumn()
-  boardId: string;
-
-  @ManyToOne(() => Column)
-  column: Column;
-
-  @TypeormColumn()
-  columnId: string;
+  @TypeormColumn({ nullable: true })
+  columnId: string | null;
 }

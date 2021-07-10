@@ -2,14 +2,15 @@ import { Column } from 'src/column/column.entity';
 import {
   Column as TypeormColumn,
   Entity,
+  JoinColumn,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Entity('boards')
 export class Board {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @TypeormColumn()
   title: string;

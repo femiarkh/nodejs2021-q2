@@ -14,9 +14,6 @@
     "starter"
   ],
   "license": "ISC",
-  "engines": {
-    "node": ">=14.0.0 <15"
-  },
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
@@ -41,6 +38,7 @@
     "class-validator": "^0.13.1",
     "cross-env": "7.0.3",
     "dotenv": "9.0.0",
+    "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "pg": "^8.6.0",
     "reflect-metadata": "^0.1.13",

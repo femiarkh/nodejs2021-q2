@@ -13,11 +13,9 @@ export class TaskCreateDto {
   @IsString()
   description: string;
 
-  @IsNotEmpty()
-  @IsString()
-  userId: string;
+  userId: string | null;
 
-  @IsNotEmpty()
-  @IsString()
-  columnId: string;
+  columnId: string | null;
+
+  boardId: string | null;
 }
