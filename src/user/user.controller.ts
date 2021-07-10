@@ -10,12 +10,13 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
+import { DeleteResult } from 'typeorm';
 import { User } from './models/user.entity';
 import { UserService } from './user.service';
-import * as bcrypt from 'bcrypt';
 import { UserCreateDto } from './models/user-create.dto';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { UserUpdateDto } from './models/user-update.dto';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { TaskService } from 'src/task/task.service';
 
 @UseGuards(JwtAuthGuard)
@@ -49,18 +50,21 @@ export class UserController {
   }
 
   @Get(':id')
-  async get(@Param('id') id: number) {
+  async get(@Param('id') id: string): Promise<User> {
     return this.userService.findOne(id);
   }
 
   @Put(':id')
-  async update(@Param('id') id: number, @Body() body: UserUpdateDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() body: UserUpdateDto,
+  ): Promise<User> {
     await this.userService.update(id, body);
     return this.userService.findOne(id);
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: number) {
+  async delete(@Param('id') id: string): Promise<DeleteResult> {
     const tasks = await this.taskService.findByCondition({ userId: id });
     await Promise.all(
       tasks.map((task) =>

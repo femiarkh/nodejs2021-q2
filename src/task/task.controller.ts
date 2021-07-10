@@ -8,11 +8,12 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
+import { TaskService } from './task.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { DeleteResult } from 'typeorm';
 import { TaskCreateDto } from './models/task-create.dto';
 import { TaskUpdateDto } from './models/task-update.dto';
 import { Task } from './models/task.entity';
-import { TaskService } from './task.service';
 
 @UseGuards(JwtAuthGuard)
 @Controller('boards/:boardId/tasks')
@@ -33,7 +34,10 @@ export class TaskController {
   }
 
   @Get(':id')
-  async get(@Param('boardId') boardId: string, @Param('id') id: string) {
+  async get(
+    @Param('boardId') boardId: string,
+    @Param('id') id: string,
+  ): Promise<Task> {
     return this.taskService.findOne(boardId, id);
   }
 
@@ -42,13 +46,16 @@ export class TaskController {
     @Param('boardId') boardId: string,
     @Param('id') id: string,
     @Body() body: TaskUpdateDto,
-  ) {
+  ): Promise<Task> {
     await this.taskService.update(boardId, id, body);
     return this.taskService.findOne(boardId, id);
   }
 
   @Delete(':id')
-  async delete(@Param('boardId') boardId: string, @Param('id') id: string) {
+  async delete(
+    @Param('boardId') boardId: string,
+    @Param('id') id: string,
+  ): Promise<DeleteResult> {
     return this.taskService.delete(boardId, id);
   }
 }

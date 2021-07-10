@@ -2,15 +2,17 @@ import { IsNumber, IsString } from 'class-validator';
 
 export class TaskUpdateDto {
   @IsString()
-  title: string;
+  title?: string;
 
   @IsNumber()
-  order: number;
+  order?: number;
 
   @IsString()
-  description: string;
+  description?: string;
 
-  userId: string;
+  boardId?: string | null;
 
-  columnId: string;
+  userId?: string | null;
+
+  columnId?: string | null;
 }

@@ -21,11 +21,13 @@ export class AuthController {
     @Body('login') login: string,
     @Body('password') password: string,
   ) {
-    const user = await this.userService.findOne({ login });
+    const users = await this.userService.findByCondition({ login });
 
-    if (!user) {
+    if (!users.length) {
       throw new ForbiddenException('User not found');
     }
+
+    const user = users[0];
 
     if (!(await bcrypt.compare(password, user.password))) {
       throw new BadRequestException('Invalid credentials');

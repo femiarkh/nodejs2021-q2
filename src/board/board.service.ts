@@ -1,7 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Task } from 'src/task/models/task.entity';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { BoardCreateDto } from './models/board-create.dto';
+import { BoardUpdateDto } from './models/board-update.dto';
 import { Board } from './models/board.entity';
 
 @Injectable()
@@ -15,12 +16,12 @@ export class BoardService {
     return this.boardRepository.find({ relations: ['columns'] });
   }
 
-  async create(data): Promise<Board> {
+  async create(data: BoardCreateDto): Promise<Board> {
     return this.boardRepository.save(data);
   }
 
-  async findOne(condition): Promise<Board> {
-    const board = await this.boardRepository.findOne(condition, {
+  async findOne(id: string): Promise<Board> {
+    const board = await this.boardRepository.findOne(id, {
       relations: ['columns'],
     });
     if (!board) {
@@ -29,11 +30,11 @@ export class BoardService {
     return board;
   }
 
-  async update(id: string, data): Promise<any> {
+  async update(id: string, data: BoardUpdateDto): Promise<UpdateResult> {
     return this.boardRepository.update(id, { title: data.title });
   }
 
-  async delete(id: string): Promise<any> {
+  async delete(id: string): Promise<DeleteResult> {
     return this.boardRepository.delete(id);
   }
 }

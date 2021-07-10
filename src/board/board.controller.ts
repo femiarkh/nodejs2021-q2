@@ -8,6 +8,7 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
+import { DeleteResult } from 'typeorm';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { BoardService } from './board.service';
 import { BoardCreateDto } from './models/board-create.dto';
@@ -31,7 +32,7 @@ export class BoardController {
   }
 
   @Post()
-  async create(@Body() body: BoardCreateDto) {
+  async create(@Body() body: BoardCreateDto): Promise<Board> {
     const { id } = await this.boardService.create(body);
     await this.columnService.create(
       body.columns.map((column) => {
@@ -43,12 +44,15 @@ export class BoardController {
   }
 
   @Get(':id')
-  async get(@Param('id') id: string) {
+  async get(@Param('id') id: string): Promise<Board> {
     return this.boardService.findOne(id);
   }
 
   @Put(':id')
-  async update(@Param('id') id: string, @Body() body: BoardUpdateDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() body: BoardUpdateDto,
+  ): Promise<Board> {
     await this.boardService.update(id, body);
     await this.columnService.create(
       body.columns.map((column) => {
@@ -61,7 +65,7 @@ export class BoardController {
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: string) {
+  async delete(@Param('id') id: string): Promise<DeleteResult> {
     const tasks = await this.taskService.all(id);
     await Promise.all(
       tasks.map((task) => this.taskService.delete(id, task.id)),

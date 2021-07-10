@@ -1,11 +1,6 @@
-import { Board } from 'src/board/models/board.entity';
-import { Column } from 'src/column/column.entity';
-import { User } from 'src/user/models/user.entity';
 import {
   Column as TypeormColumn,
   Entity,
-  JoinColumn,
-  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 

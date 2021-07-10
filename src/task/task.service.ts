@@ -4,7 +4,9 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { TaskCreateDto } from './models/task-create.dto';
+import { TaskUpdateDto } from './models/task-update.dto';
 import { Task } from './models/task.entity';
 
 @Injectable()
@@ -14,23 +16,25 @@ export class TaskService {
     private readonly taskRepository: Repository<Task>,
   ) {}
 
-  async all(boardId): Promise<Task[]> {
+  async all(boardId: string): Promise<Task[]> {
     return this.taskRepository.find({
       where: { boardId },
     });
   }
 
-  async findByCondition(condition): Promise<Task[]> {
+  async findByCondition(condition: {
+    [key: string]: string | number;
+  }): Promise<Task[]> {
     return this.taskRepository.find({
       where: condition,
     });
   }
 
-  async save(boardId, task): Promise<Task> {
+  async save(boardId: string, task: TaskCreateDto): Promise<Task> {
     return this.taskRepository.save({ ...task, boardId });
   }
 
-  async findOne(boardId, id): Promise<Task> {
+  async findOne(boardId: string, id: string): Promise<Task> {
     const task = await this.taskRepository.findOne({
       where: {
         boardId,
@@ -43,7 +47,11 @@ export class TaskService {
     return task;
   }
 
-  async update(boardId, id, data): Promise<any> {
+  async update(
+    boardId: string,
+    id: string,
+    data: TaskUpdateDto,
+  ): Promise<UpdateResult> {
     const task = await this.taskRepository.findOne({
       where: {
         boardId,
@@ -56,7 +64,7 @@ export class TaskService {
     return this.taskRepository.update(id, data);
   }
 
-  async delete(boardId, id): Promise<any> {
+  async delete(boardId: string, id: string): Promise<DeleteResult> {
     const task = await this.taskRepository.findOne({
       where: {
         boardId,
