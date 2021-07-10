@@ -4,6 +4,8 @@ import {
   Controller,
   Delete,
   Get,
+  Inject,
+  LoggerService,
   Param,
   Post,
   Put,
@@ -18,18 +20,22 @@ import { UserCreateDto } from './models/user-create.dto';
 import { UserUpdateDto } from './models/user-update.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { TaskService } from 'src/task/task.service';
+import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 
 @UseGuards(JwtAuthGuard)
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('users')
 export class UserController {
   constructor(
+    @Inject(WINSTON_MODULE_NEST_PROVIDER)
+    private readonly logger: LoggerService,
     private userService: UserService,
     private taskService: TaskService,
   ) {}
 
   @Get()
   async all(): Promise<User[]> {
+    this.logger.log('test');
     return this.userService.all();
   }
 
