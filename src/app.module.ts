@@ -7,6 +7,8 @@ import { BoardModule } from './board/board.module';
 import { ColumnModule } from './column/column.module';
 import { TaskModule } from './task/task.module';
 import 'dotenv/config';
+import { APP_FILTER } from '@nestjs/core';
+import { HttpExceptionFilter } from './http-exception.filter';
 
 @Module({
   imports: [
@@ -27,5 +29,11 @@ import 'dotenv/config';
     TaskModule,
   ],
   controllers: [AppController],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: HttpExceptionFilter,
+    },
+  ],
 })
 export class AppModule {}
