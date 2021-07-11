@@ -41,37 +41,37 @@ The results should look something like:
 
 ### Express
 Summary report @ 19:23:00(+0300) 2021-07-11
-  Scenarios launched:  630
-  Scenarios completed: 630
-  Requests completed:  3780
-  Mean response/sec: 42.22
-  Response time (msec):
+  - Scenarios launched:  630
+  - Scenarios completed: 630
+  - Requests completed:  3780
+  - Mean response/sec: 42.22
+  - Response time (msec):
     - min: 3
     - max: 203
     - median: 53.5
     - p95: 121
     - p99: 142
-  Scenario counts:
+  - Scenario counts:
     - 0: 630 (100%)
-  Codes:
+  - Codes:
     - 200: 2520
     - 201: 1260
 
 ### Fastify
 Summary report @ 19:27:28(+0300) 2021-07-11
-  Scenarios launched:  630
-  Scenarios completed: 630
-  Requests completed:  3780
-  Mean response/sec: 42.19
-  Response time (msec):
+  - Scenarios launched:  630
+  - Scenarios completed: 630
+  - Requests completed:  3780
+  - Mean response/sec: 42.19
+  - Response time (msec):
     - min: 3
     - max: 231
     - median: 54
     - p95: 117
     - p99: 140.7
-  Scenario counts:
+  - Scenario counts:
     - 0: 630 (100%)
-  Codes:
+  - Codes:
     - 200: 2520
     - 201: 1260
 
