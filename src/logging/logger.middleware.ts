@@ -4,6 +4,10 @@ import { Request, Response, NextFunction } from 'express';
 import { finished } from 'stream';
 import { MyLogger } from './logger.service';
 
+if (!fs.existsSync('logs')) {
+  fs.mkdirSync('logs');
+}
+
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {
   constructor(private readonly logger: MyLogger) {}

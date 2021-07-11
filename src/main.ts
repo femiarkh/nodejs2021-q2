@@ -8,7 +8,7 @@ import {
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import 'dotenv/config';
-import { MyLogger } from './utils/logger.service';
+import { MyLogger } from './logging/logger.service';
 import { OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {

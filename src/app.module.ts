@@ -9,12 +9,12 @@ import { TaskModule } from './task/task.module';
 import 'dotenv/config';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './utils/http-exception.filter';
-import { LoggerMiddleware } from './utils/logger.middleware';
+import { LoggerMiddleware } from './logging/logger.middleware';
 import { UserController } from './user/user.controller';
 import { BoardController } from './board/board.controller';
 import { TaskController } from './task/task.controller';
 import { AuthController } from './auth/auth.controller';
-import { LoggerModule } from './utils/logger.module';
+import { LoggerModule } from './logging/logger.module';
 
 @Module({
   imports: [
