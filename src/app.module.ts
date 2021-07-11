@@ -1,7 +1,5 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { WinstonModule } from 'nest-winston';
-import * as winston from 'winston';
 import { AppController } from './app.controller';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
@@ -10,15 +8,13 @@ import { ColumnModule } from './column/column.module';
 import { TaskModule } from './task/task.module';
 import 'dotenv/config';
 import { APP_FILTER } from '@nestjs/core';
-import { HttpExceptionFilter } from './http-exception.filter';
-import { LoggerMiddleware } from './logger.middleware';
+import { HttpExceptionFilter } from './utils/http-exception.filter';
+import { LoggerMiddleware } from './utils/logger.middleware';
 import { UserController } from './user/user.controller';
 import { BoardController } from './board/board.controller';
 import { TaskController } from './task/task.controller';
 import { AuthController } from './auth/auth.controller';
-
-const { colorize, errors, prettyPrint, simple, combine } = winston.format;
-const { File, Console } = winston.transports;
+import { LoggerModule } from './utils/logger.module';
 
 @Module({
   imports: [
@@ -33,22 +29,11 @@ const { File, Console } = winston.transports;
       autoLoadEntities: true,
       synchronize: true,
     }),
-    WinstonModule.forRoot({
-      level: 'info',
-      format: combine(colorize(), errors({ stack: true }), prettyPrint()),
-      defaultMeta: { service: 'user-service' },
-      transports: [
-        new File({ filename: 'error.log', level: 'error' }),
-        new File({ filename: 'combined.log' }),
-        new Console({
-          format: simple(),
-        }),
-      ],
-    }),
     AuthModule,
     BoardModule,
     ColumnModule,
     TaskModule,
+    LoggerModule,
   ],
   controllers: [AppController],
   providers: [
