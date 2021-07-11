@@ -3,6 +3,10 @@ config:
   phases:
     - duration: 30
       arrivalRate: 1
+      name: WarmUp
+    - duration: 60
+      arrivalRate: 10
+      name: Core
 scenarios:
   - flow:
       - post:
