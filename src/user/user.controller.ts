@@ -59,6 +59,9 @@ export class UserController {
     @Param('id') id: string,
     @Body() body: UserUpdateDto,
   ): Promise<User> {
+    if (body.password) {
+      body.password = await bcrypt.hash(body.password, 10);
+    }
     await this.userService.update(id, body);
     return this.userService.findOne(id);
   }

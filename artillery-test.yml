@@ -1,0 +1,56 @@
+config:
+  target: 'http://127.0.0.1:8000'
+  phases:
+    - duration: 30
+      arrivalRate: 1
+scenarios:
+  - flow:
+      - post:
+          url: '/login'
+          json:
+            login: 'admin'
+            password: 'admin'
+          capture:
+            json: '$.token'
+            as: token
+          expect:
+            - statusCode: 200
+      - get:
+          headers:
+            Authorization: 'Bearer {{ token }}'
+          url: '/users'
+      - post:
+          headers:
+            Authorization: 'Bearer {{ token }}'
+          url: '/users'
+          json:
+            name: 'test'
+            login: 'test'
+            password: 'test'
+          capture:
+            json: '$.id'
+            as: userId
+          expect:
+            - statusCode: 201
+      - get:
+          headers:
+            Authorization: 'Bearer {{ token }}'
+          url: '/users/{{ userId }}'
+          expect:
+            - statusCode: 200
+      - put:
+          headers:
+            Authorization: 'Bearer {{ token }}'
+          url: '/users/{{ userId }}'
+          json:
+            name: 'updated'
+            login: 'updated'
+            password: 'updated'
+          expect:
+            - statusCode: 200
+      - delete:
+          headers:
+            Authorization: 'Bearer {{ token }}'
+          url: '/users/{{ userId }}'
+          expect:
+            - statusCode: 200
