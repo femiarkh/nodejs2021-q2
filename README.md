@@ -21,9 +21,59 @@ Go to the root directory and run
 docker-compose up
 ```
 
-After starting the app on port (4000 as default) you can open
-in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
-For more information about OpenAPI/Swagger please visit https://swagger.io/.
+In order to stop and remove the containers, run
+
+```
+docker-compose down
+```
+
+## Switching between Express and Fastify
+
+You can switch between Express and Fastify by setting `USE_FASTIFY` to `'true'` (or not) in `.env` file.
+
+If you wish to compare performance of the app in different frameworks, you can run:
+
+`$(npm bin)/artillery run artillery-test.yml`
+
+It will test the `users` module with one or the other framework depending on the `USE_FASTIFY` value.
+
+The results should look something like:
+
+### Express
+Summary report @ 19:23:00(+0300) 2021-07-11
+  - Scenarios launched:  630
+  - Scenarios completed: 630
+  - Requests completed:  3780
+  - Mean response/sec: 42.22
+  - Response time (msec):
+    - min: 3
+    - max: 203
+    - median: 53.5
+    - p95: 121
+    - p99: 142
+  - Scenario counts:
+    - 0: 630 (100%)
+  - Codes:
+    - 200: 2520
+    - 201: 1260
+
+### Fastify
+Summary report @ 19:27:28(+0300) 2021-07-11
+  - Scenarios launched:  630
+  - Scenarios completed: 630
+  - Requests completed:  3780
+  - Mean response/sec: 42.19
+  - Response time (msec):
+    - min: 3
+    - max: 231
+    - median: 54
+    - p95: 117
+    - p99: 140.7
+  - Scenario counts:
+    - 0: 630 (100%)
+  - Codes:
+    - 200: 2520
+    - 201: 1260
 
 ## Testing
 
@@ -68,11 +118,3 @@ npm run lint
 Press <kbd>F5</kbd> to debug.
 
 For more information, visit: https://code.visualstudio.com/docs/editor/debugging
-
-### Documentation
-
-The project uses JSDoc 3 for creating documentation. To generate docs, run
-
-`npm run doc`
-
-The doc pages will be generated in `jsdoc` folder in the root directory.
