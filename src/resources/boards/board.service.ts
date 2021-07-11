@@ -71,9 +71,7 @@ export default {
       column.board_id = board.id;
       return column;
     });
-    await Promise.all(
-      boardColumns.map(async (column) => getRepository(Column).save(column))
-    );
+    await getRepository(Column).save(boardColumns);
     const addedBoard = await getRepository(Board).findOne(board.id, {
       relations: ['columns'],
     });

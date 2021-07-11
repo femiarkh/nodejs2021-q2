@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { getRepository } from 'typeorm';
+import bcrypt from 'bcrypt';
 import User from './user.entity';
 import catchAsync from '../../utils/errors/catchAsync';
 import AppError from '../../utils/errors/AppError';
@@ -46,15 +47,18 @@ export default {
         )
       );
     }
+    const saltRounds = 10;
     const user = new User();
-    user.name = name;
-    user.login = login;
-    user.password = password;
-    await getRepository(User).save(user);
-    res.status(StatusCodes.CREATED).json({
-      id: user.id.toString(),
-      name: user.name,
-      login: user.login,
+    await bcrypt.hash(password, saltRounds, async (_err, hash) => {
+      user.name = name;
+      user.login = login;
+      user.password = hash;
+      await getRepository(User).save(user);
+      res.status(StatusCodes.CREATED).json({
+        id: user.id.toString(),
+        name: user.name,
+        login: user.login,
+      });
     });
   }),
 

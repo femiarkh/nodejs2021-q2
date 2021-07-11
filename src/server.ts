@@ -1,8 +1,9 @@
-import { createConnection } from 'typeorm';
+import { Connection, createConnection, getConnection } from 'typeorm';
 import 'reflect-metadata';
 import { Server } from 'http';
 import * as logging from './utils/logging';
 import app from './app';
+import createAdmin from './utils/createAdmin';
 
 process.on('uncaughtException', (err: Error) => {
   logging.uncaughtException(err);
@@ -19,12 +20,28 @@ const port = process.env['PORT'] || 4000;
 let server: Server;
 
 (async () => {
-  const connection = await createConnection();
+  const connectToDB = async (): Promise<Connection | void> => {
+    let connection;
+    try {
+      if (!connection) {
+        connection = await createConnection();
+      } else {
+        connection = getConnection();
+      }
+      console.log('Successfully connected to DB');
+      return connection;
+    } catch (err) {
+      await new Promise((res) => setTimeout(() => res(null), 5000));
+      return connectToDB();
+    }
+  };
+  const connection = (await connectToDB()) as Connection;
   await connection.runMigrations();
+  await createAdmin();
 
-  server = app.listen(port, () =>
-    console.log(`App is running on http://localhost:${port}`)
-  );
+  server = app.listen(port, () => {
+    console.log(`App is running on http://localhost:${port}`);
+  });
 })();
 
 process.on('unhandledRejection', (err: Error) => {
