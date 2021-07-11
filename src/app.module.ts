@@ -1,18 +1,18 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
-import { UserModule } from './user/user.module';
+import { UserModule } from './resources/user/user.module';
 import { AuthModule } from './auth/auth.module';
-import { BoardModule } from './board/board.module';
-import { ColumnModule } from './column/column.module';
-import { TaskModule } from './task/task.module';
+import { BoardModule } from './resources/board/board.module';
+import { ColumnModule } from './resources/column/column.module';
+import { TaskModule } from './resources/task/task.module';
 import 'dotenv/config';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './utils/http-exception.filter';
 import { LoggerMiddleware } from './logging/logger.middleware';
-import { UserController } from './user/user.controller';
-import { BoardController } from './board/board.controller';
-import { TaskController } from './task/task.controller';
+import { UserController } from './resources/user/user.controller';
+import { BoardController } from './resources/board/board.controller';
+import { TaskController } from './resources/task/task.controller';
 import { AuthController } from './auth/auth.controller';
 import { LoggerModule } from './logging/logger.module';
 

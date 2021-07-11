@@ -1,8 +1,8 @@
 import { Controller, Get } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import { UserService } from './user/user.service';
+import { UserService } from './resources/user/user.service';
 import 'dotenv/config';
-import { User } from './user/models/user.entity';
+import { User } from './resources/user/models/user.entity';
 
 @Controller()
 export class AppController {

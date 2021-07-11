@@ -17,7 +17,7 @@ import { UserService } from './user.service';
 import { UserCreateDto } from './models/user-create.dto';
 import { UserUpdateDto } from './models/user-update.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { TaskService } from 'src/task/task.service';
+import { TaskService } from 'src/resources/task/task.service';
 
 @UseGuards(JwtAuthGuard)
 @UseInterceptors(ClassSerializerInterceptor)

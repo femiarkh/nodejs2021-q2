@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
-import { Board } from 'src/board/models/board.entity';
+import { Board } from 'src/resources/board/models/board.entity';
 
 import {
   Column as TypeormColumn,

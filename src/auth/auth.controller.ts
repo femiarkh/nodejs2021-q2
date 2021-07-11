@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { UserService } from 'src/user/user.service';
+import { UserService } from 'src/resources/user/user.service';
 
 @Controller()
 export class AuthController {

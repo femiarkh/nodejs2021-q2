@@ -6,7 +6,7 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
-import { Column } from 'src/column/column.entity';
+import { Column } from 'src/resources/column/column.entity';
 
 export class BoardCreateDto {
   @IsNotEmpty()

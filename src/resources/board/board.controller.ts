@@ -14,8 +14,8 @@ import { BoardService } from './board.service';
 import { BoardCreateDto } from './models/board-create.dto';
 import { BoardUpdateDto } from './models/board-update.dto';
 import { Board } from './models/board.entity';
-import { ColumnService } from './../column/column.service';
-import { TaskService } from 'src/task/task.service';
+import { ColumnService } from '../column/column.service';
+import { TaskService } from 'src/resources/task/task.service';
 
 @UseGuards(JwtAuthGuard)
 @Controller('boards')

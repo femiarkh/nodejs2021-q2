@@ -1,4 +1,4 @@
-import { Column } from 'src/column/column.entity';
+import { Column } from 'src/resources/column/column.entity';
 import {
   Column as TypeormColumn,
   Entity,
